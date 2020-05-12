@@ -15,7 +15,7 @@ layout = [[sg.Text('Biblioteca')],
 
 
 def identificador(dicc, name, juego):
-    dicc[name].append(juego)
+    dicc[name].append(juego)#un diccionario de listas con los nombres como claves y los juegos como valores
     return dicc
 
 
@@ -43,34 +43,11 @@ def main(args):
                 dicc = identificador(dicc, name, juego)
                 reversegam.main()
         with open("jugadores.json", 'a') as file:
-            json.dump(dicc, file, indent=2)
+            json.dump(dicc, file, indent=2)#un archivo json permite mayor legibilidad e interoperabilidad
     window.close()
 
 if __name__ == '__main__':
     import sys
     sys.exit(main(sys.argv))
 
-    """while sigo_jugando:
-        print('''
-        Elegí con qué juego querés jugar:
-        1.- Ahorcado
-        2.- Ta-TE-TI
-        3.- Otello
-        4.- Salir''')
-        opcion = input()
-        if opcion == '1':
-            juego = "Ahorcado"
-            dicc = identificador(dicc, name, juego)
-            hangman.main()
-        elif opcion == '2':
-            juego = "Ta-Te-Ti"
-            dicc = identificador(dicc, name, juego)
-            tictactoeModificado.main()
-        elif opcion == '3':
-            juego = "Otello"
-            dicc = identificador(dicc, name, juego)
-            reversegam.main()
-        elif opcion == '4':
-            sigo_jugando = False
-            with open("jugadores.json", 'a') as file:
-                json.dump(dicc, file, indent=2)"""
+   
