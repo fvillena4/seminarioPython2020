@@ -1,6 +1,7 @@
-import pattern
+import pattern.es as pt
 import PySimpleGUI as sg
 import random
+from bolsa_letras import Bolsa
 
 def iniciar(nombre):
     x = random.randint(0, 1)
@@ -13,7 +14,7 @@ def iniciar(nombre):
 def verificarPalabra(palabra):
     """Verifico que la palabra esta en los diccionarios de pattern
     """
-    return palabra in (lexicon and spelling)
+    return palabra in (pt.lexicon and pt.spelling)
 
 def esBotonLetra(cadena):
     """ Funcion que verificaria si el boton es una letra, ya que el event de letras es
@@ -43,16 +44,16 @@ def posicionesPalabra(pos_actual, posiciones, window, event):
 Filas = 8
 Columnas = 8
 layout = [[sg.Button(" ", size=(2, 2), key=(i,j), pad=(1,1)) for j in range(Filas)] for i in range(Columnas)]
-abc =["a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z"]
-letras=[]
+
+bolsa = Bolsa()
+letras, bolsa = bolsa.generarLetras()
 a=[]
 for j in range(7):
-    letras.append(abc[random.randint(0, 25)])
-    a.append(sg.Button(letras[j], size=(3, 3), key=("letra"+str(j)), pad=((1,15),15,1), button_color=('white', 'blue')))
+    a.append(sg.Button(letras[j], size=(3, 3), key=("letra"+str(j)), pad=((1,15),15,1), button_color=('white', 'lightblue')))
 
 layout.append(a)
 layout.append([sg.Button('Iniciar', key="iniciar", border_width = 5, button_color=('white', 'green'), size=(3, 3), font=("Helvetica", 12)),
-               sg.Button('Finalizar turno', border_width = 5, button_color=('white', 'red'), size=(5, 3), font=("Helvetica", 12)),
+               sg.Button('Finalizar turno', key="fin", border_width = 5, button_color=('white', 'red'), size=(5, 3), font=("Helvetica", 12)),
                sg.Button('Deshacer', key="Deshacer", border_width = 5, button_color=('black', 'pink'), size=(5, 3), pad=((1,15),15,1), font=("Helvetica", 12))])
 window = sg.Window('Tablero', layout, resizable=True, element_justification='c')
 posiciones = []#lista que va a tener las posiciones
@@ -80,3 +81,9 @@ while True:
                 window.FindElement(event_letra).Update(" ")#actualizo para remplazar mi letra por un " "
             else:
                 print("Elija el espacio para ingresar la letra")#deberia meter manejo de excepciones
+    if (event == "fin"):
+        palabra = "".join(palabra).lower()
+        if verificarPalabra(palabra):
+            sg.popup("La palabra: "+palabra+" es correcta")
+        else:
+            sg.popup("La palabra: "+palabra+" no existe. Ingrese otra palabra")
