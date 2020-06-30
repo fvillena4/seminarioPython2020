@@ -14,7 +14,7 @@ class Bolsa():
         """Verifica si la bolsa esta vacia osea si no quedan mas letras
         """
         for i in list(self.bolsa_p.keys()):
-            if(bolsa_p[i]!= 0):
+            if(self.bolsa_p[i]!= 0):
                 return False
         return True
 
