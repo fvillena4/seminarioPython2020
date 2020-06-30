@@ -16,4 +16,4 @@ while True:
         break
     if (event == "iniciar"):
         window.close()
-        import Trabajo_Final.py
+        import Scrabble.py
