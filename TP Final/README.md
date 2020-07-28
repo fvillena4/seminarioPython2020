@@ -8,4 +8,6 @@ Este es mi intento de subir la carpeta TP Final a mi repositorio que ya existia 
 
 º15-6-2020: Logramos que las letras se agreguen una a una en el tablero, el problema es que comparamos con nuestras 7 letras pero si quisiera cambiar una letra del tablero que no puse yo o de un turno anterior podría y no deberia poder.
 
-º29-6-2020 : hicimos un prototipo de menu.py,creamos un archivo bolsa_letras.py que genera la bolsa con la cantidad de letras que dice el enunciado, en el mismo hay un metodo que genera las letras para cada jugador (IDEA: ver clase bolsa de palabras), en el Trabajo_Final.py logramos deshabilitar el casillero luego de que se ingresa una letra. Tambien pensamos en 3 posibles tableros que pusimos en tablero.py pero que nos faltan implementar.
+º29-6-2020 : hicimos un prototipo de menu,creamos un archivo bolsa_letras.py que genera la bolsa con la cantidad de letras que dice el enunciado, en el mismo hay un metodo que genera las letras para cada jugador (IDEA: deberia ser una clase bolsa de palabras), en el Trabajo_Final.py logramos deshabilitar el casillero luego de que se ingresa una letra.Tambien pensamos en 3 posibles tableros que pusimos en tablero.py pero que nos faltan implementar.
+
+º28-7-2020 : hicimos los tableros, una clase maquina y una clase juez, modificamos el menu. Agregamos la configuracion de cada aspecto. Falta la integración con el backend y el desarrollo de la partida con el tiempo
