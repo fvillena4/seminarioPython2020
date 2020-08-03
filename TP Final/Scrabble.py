@@ -2,7 +2,11 @@ import pattern.es as pt
 import PySimpleGUI as sg
 import random
 from bolsa_letras import Bolsa
-from tableros import tablero
+from tableros import Tablero
+from jugador import Jugador
+from juez import Juez
+import crear_layout as crear
+import menu
 
 
 def iniciar(nombre):
@@ -15,7 +19,7 @@ def iniciar(nombre):
 
 
 def verificarPalabra(palabra):
-    """Verifico que la palabra esta en los diccionarios de pattern
+    """Verifico que la palabra esta en los diccionarios de pattern.
     """
     return palabra in (pt.lexicon and pt.spelling)
 
@@ -42,34 +46,41 @@ def posicionesPalabra(pos_actual, posiciones, window, event):
         posiciones.append(pos_actual)  # agrego la posicion
     elif len(posiciones) >= 1:  # sino si tengo una o mas de una posicion
         pos_ult = len(posiciones) - 1  # asigno cual el la posicion del ultimo
-        if (pos_actual[0] == posiciones[pos_ult[0]]) or (
-            pos_actual[1] == posiciones[pos_ult[1]]
-        ):  # si esta en la misma fila o columna
+        if (pos_actual[0] == posiciones[pos_ult[0]]) or (pos_actual[1] == posiciones[pos_ult[1]]):  # si esta en la misma fila o columna
             posiciones.append(pos_actual)  # agrego la posicion
         else:
             print("No puede ingresar una letra diagonalmente")
     return posiciones  # devuelvo las posiciones
 
 
-tab = tablero()
-layout = tab.getTablero()
+# tab = Tablero()
+# layout = tab.config_tablero()
 bolsa = Bolsa()
-letras, bolsa = bolsa.generarLetras()
-
+letras = bolsa.sacar_letras(7)
+layout = menu.layout
+config = menu.config
+w, h = sg.Window.get_screen_size()
+window = sg.Window(
+    "SCRABBLE",
+    crear.crear_partida(config),
+    finalize=True,
+    size=(w, h),
+    resizable=True,
+    element_justification="c",
+    background_color="#143430",
+)
+window.Maximize()
 a = []
+claves = []
 for j in range(7):
-    a.append(
-        sg.Button(
-            letras[j],
-            size=(3, 3),
-            key=("letra" + str(j)),
-            button_color=("black", "lightblue"),
-        )
-    )
+    clave = ("letra" + str(j),)
+    window[clave].Update(letras[j])
+    claves.append(clave)
 
+mis_letras = dict(zip(claves, letras))
 b = []
 for j in range(7):
-    b.append(sg.Button(size=(3, 3), button_color=("white", "blue"),))
+    b.append(sg.Button("*", size=(3, 3), key=("letraM",), button_color=("white", "blue")))
 
 layout.append(a)
 layout.insert(0, b)
@@ -77,7 +88,7 @@ layout.append(
     [
         sg.Button(
             "Iniciar",
-            key="iniciar",
+            key=("iniciar",),
             border_width=5,
             button_color=("white", "green"),
             size=(3, 3),
@@ -85,7 +96,7 @@ layout.append(
         ),
         sg.Button(
             "Finalizar turno",
-            key="fin",
+            key=("fin-turno",),
             border_width=5,
             button_color=("white", "red"),
             size=(5, 3),
@@ -93,56 +104,37 @@ layout.append(
         ),
         sg.Button(
             "Deshacer",
-            key="Deshacer",
+            key=("vaciar",),
             border_width=5,
             button_color=("black", "pink"),
             size=(5, 3),
             pad=((1, 15), 15, 1),
             font=("Helvetica", 12),
         ),
+        sg.Button(
+            "Cambiar letras",
+            key=("cambio",),
+            border_width=5,
+            button_color=('black', 'lightblue'),
+            size=(5, 3),
+            pad=((1, 15), 15, 1),
+            font=("Helvetica", 12),
+        ),
     ]
 )
-window = sg.Window("Tablero", layout, resizable=True, element_justification="c")
 posiciones = []  # lista que va a tener las posiciones
 palabra = []  # lista que va a contener la palabra
+juez = Juez("facil")
 comenzo = False
 while True:
     event, values = window.Read()
-    if event == "iniciar" and not comenzo:
+    if event in None or event[0] == "fin-partida":
+        break
+    elif event[0] == "iniciar" and not comenzo:
         nombre = sg.popup_get_text("Ingrese su nombre: ")
+        jugador = Jugador(nombre, mis_letras)
         comenzo = iniciar(nombre)
     elif not comenzo:
         sg.popup_ok("Para comenzar oprima el boton iniciar")
-    if event == None:
-        break
     if comenzo:
-        letra = window.FindElement(event).GetText()
-        event_letra = event  # guardo el event de letra
-        if (
-            letra in letras
-        ):  # verifico que este en mis letras, el problema es que si hay una letra igual ya puesta en el tablero la podria modificar y no deberia POSIBLE SOLUCIÓN= window[boton].Update(disabled = True)
-            event, values = window.Read()
-            if (
-                window.FindElement(event).GetText() == " "
-            ):  # si el elemento no tiene nada escrito
-                window.FindElement(event).Update(
-                    letra
-                )  # pongo la letra en el casillero vacio
-                palabra.append(letra)  # agrego la letra a palabra
-                posiciones.append(event)  # agrego la posicion donde la agregamos
-                window[event].Update(
-                    disabled=True
-                )  # actualizo la posicion donde la agregue para que no se pueda volver a modificar
-                window.FindElement(event_letra).Update(
-                    " "
-                )  # actualizo para remplazar mi letra por un " "
-            else:
-                print(
-                    "Elija el espacio para ingresar la letra"
-                )  # deberia meter manejo de excepciones
-    if event == "fin":
-        palabra = "".join(palabra).lower()
-        if verificarPalabra(palabra):
-            sg.popup("La palabra: " + palabra + " es correcta")
-        else:
-            sg.popup("La palabra: " + palabra + " no existe. Ingrese otra palabra")
+        jugador.jugar(window, juez, bolsa)

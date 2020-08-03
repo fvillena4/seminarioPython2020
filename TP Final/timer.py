@@ -11,53 +11,37 @@ import time
   it takes to execute the PySimpleGUI read and update calls (not good!)
 """
 
-
-def time_as_int():
-    return int(round(time.time()))
+class Reloj():
 
 
-# ----------------  Create Form  ----------------
-sg.theme('LightBlue1')
+    layout = [[sg.Text('Reloj', text_color="red", justification='center')],
+              [sg.Text('', size=(8, 2), font=('Helvetica', 20), justification='center', key='text')]]
 
-layout = [[sg.Text('')],
-          [sg.Text('', size=(8, 2), font=('Helvetica', 20), justification='center', key='text')],
-          [sg.Button('Pause', key='-RUN-PAUSE-', button_color=('white', '#001480')),
-           sg.Exit(button_color=('white', 'firebrick4'), key='Exit')]]
+    def time_as_int(self):
+        return int(round(time.time()))
 
-window = sg.Window('Running Timer', layout,
-                   no_titlebar=True,
-                   auto_size_buttons=False,
-                   keep_on_top=True,
-                   grab_anywhere=True,
-                   element_padding=(0, 0))
+    def __init__(self, minutos):
+        sg.theme('LightBlue1')
+        self.current_time = 0
+        self.end_time = 60 * minutos  # 60 por la cantidad de minutos que se quiere
+        self.start_time = self.time_as_int()
+        self.window = sg.Window('Running Timer', self.layout,
+                                no_titlebar=True,
+                                auto_size_buttons=False,
+                                keep_on_top=True,
+                                grab_anywhere=True,
+                                element_padding=(0, 0))
 
-current_time, paused_time, paused = 0, 0, False
-start_time = time_as_int()
-end_time = 60*5
+    def correr(self):
+        while self.current_time < self.end_time:
+            # --------- Read and update window --------
+            event, values = self.window.read(timeout=1)
+            self.current_time = self.time_as_int() - self.start_time
+            # print(self.current_time)
+            # --------- Display timer in window --------
+            self.window['text'].update('{:02d}:{:02d}:{:02d}'.format((self.current_time // 100) // 60, (self.current_time // 100) % 60, (self.current_time % 100)))
+        self.window.close()
 
-while current_time < end_time:
-    # --------- Read and update window --------
-    if not paused:
-        event, values = window.read(timeout=10)
-        current_time = time_as_int() - start_time
-        print(current_time)
-    else:
-        event, values = window.read()
-    # --------- Do Button Operations --------
-    if event in (sg.WIN_CLOSED, 'Exit'):  # ALWAYS give a way out of program
-        break
-    if event == '-RESET-':
-        paused_time = start_time = time_as_int()
-        current_time = 0
-    elif event == '-RUN-PAUSE-':
-        paused = not paused
-        if paused:
-            paused_time = time_as_int()
-        else:
-            start_time = start_time + time_as_int() - paused_time
-        # Change button's text
-        window['-RUN-PAUSE-'].update('Run' if paused else 'Pause')
 
-    # --------- Display timer in window --------
-    window['text'].update('{:02d}:{:02d}:{:02d}'.format((current_time // 100) // 60, (current_time // 100) % 60, (current_time % 100)))
-window.close()
+reloj = Reloj(0.5)
+reloj.correr()

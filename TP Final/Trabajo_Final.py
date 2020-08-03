@@ -2,6 +2,8 @@ import pattern.es as pt
 import PySimpleGUI as sg
 import random
 from bolsa_letras import Bolsa
+from jugador import Jugador
+from juez import Juez
 
 def iniciar(nombre):
     x = random.randint(0, 1)
@@ -46,18 +48,22 @@ Columnas = 8
 layout = [[sg.Button(" ", size=(2, 2), key=(i,j), pad=(1,1)) for j in range(Filas)] for i in range(Columnas)]
 
 bolsa = Bolsa()
-letras, bolsa = bolsa.generarLetras()
-a=[]
+letras = bolsa.sacar_letras(7)
+a = []
+claves = []
 for j in range(7):
     a.append(sg.Button(letras[j], size=(3, 3), key=("letra"+str(j)), pad=((1,15),15,1), button_color=('white', 'lightblue')))
-
+    claves.append("letra"+str(j))
+mis_letras = dict(zip(claves, letras))
+print(claves)
 layout.append(a)
-layout.append([sg.Button('Iniciar', key="iniciar", border_width = 5, button_color=('white', 'green'), size=(3, 3), font=("Helvetica", 12)),
-               sg.Button('Finalizar turno', key="fin", border_width = 5, button_color=('white', 'red'), size=(5, 3), font=("Helvetica", 12)),
-               sg.Button('Deshacer', key="Deshacer", border_width = 5, button_color=('black', 'pink'), size=(5, 3), pad=((1,15),15,1), font=("Helvetica", 12))])
+layout.append([sg.Button('Iniciar', key="iniciar", border_width=5, button_color=('white', 'green'), size=(3, 3), font=("Helvetica", 12)),
+               sg.Button('Finalizar turno', key="fin-turno", border_width=5, button_color=('white', 'red'), size=(5, 3), font=("Helvetica", 12)),
+               sg.Button('Deshacer', key="vaciar", border_width=5, button_color=('black', 'pink'), size=(5, 3), pad=((1,15),15,1), font=("Helvetica", 12)),
+               sg.Button('Cambiar Letras', key="cambio", border_width=5, button_color=('black', 'lightblue'), size=(5, 3), pad=((1,15),15,1), font=("Helvetica", 12))])
 window = sg.Window('Tablero', layout, resizable=True, element_justification='c')
-posiciones = []#lista que va a tener las posiciones
-palabra = []#lista que va a contener la palabra
+jugador = Jugador("facu", mis_letras)
+juez = Juez("facil")
 comenzo = False
 while True:
     event, values = window.Read()
@@ -69,21 +75,5 @@ while True:
     if (event == None):
         break
     if (comenzo):
-        letra = window.FindElement(event).GetText()
-        event_letra = event#guardo el event de letra
-        if (letra in letras):#verifico que este en mis letras, el problema es que si hay una letra igual ya puesta en el tablero la podria modificar y no deberia POSIBLE SOLUCIÓN= window[boton].Update(disabled = True)
-            event, values = window.Read()
-            if(window.FindElement(event).GetText()==" "):#si el elemento no tiene nada escrito
-                window.FindElement(event).Update(letra)#pongo la letra en el casillero vacio
-                palabra.append(letra)#agrego la letra a palabra
-                posiciones.append(event)#agrego la posicion donde la agregamos
-                window[event].Update(disabled = True)#actualizo la posicion donde la agregue para que no se pueda volver a modificar
-                window.FindElement(event_letra).Update(" ")#actualizo para remplazar mi letra por un " "
-            else:
-                print("Elija el espacio para ingresar la letra")#deberia meter manejo de excepciones
-    if (event == "fin"):
-        palabra = "".join(palabra).lower()
-        if verificarPalabra(palabra):
-            sg.popup("La palabra: "+palabra+" es correcta")
-        else:
-            sg.popup("La palabra: "+palabra+" no existe. Ingrese otra palabra")
+        print("juego")
+        jugador.jugar(window, juez, bolsa)

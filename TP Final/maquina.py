@@ -207,23 +207,24 @@ class Maquina():
         Devuelvo True si pude poner la palabra o False si no.
         """
         palabra = ""
-        if (self._espacios.keys()):
-            espacio_max = max(list(self._espacios.keys()))
+        if (self._espacios.keys()):  # si hay espacios
+            espacio_max = max(list(self._espacios.keys()))  # me quedo con el mayor espacio disponible
         else:
-            espacio_max = 0
-        if(self._nivel == "facil"):
+            espacio_max = 0  # sino el espacio maximo es 0
+        if self._nivel == "facil" and espacio_max != 0:
             for i in self._palabras_validas:  # recorro las palabras validas
                 if espacio_max >= len(i):  # si encuentro un lugar donde pueda entrar
                     palabra = i  # guardo la 1ª palabra que cumpla la condición
                     break  # salgo del ciclo
-        else:
+        elif (self._nivel == "medio" or self._nivel == "dificil") and espacio_max != 0:
             adj_verb = sorted(self._palabras_adj_verb, key=len, reverse=True)  # creo una variable auxiliar con la lista de palabras ordenadas de mayora a menor
             for i in adj_verb:
                 if espacio_max >= len(palabra):  # si encuentro un lugar donde pueda entrar
                     palabra = i  # guardo la palabra mas grande posible
                     break  # salgo del ciclo
-        if len(self._espacios.keys()) > 0 and espacio_max >= len(palabra):
-            self._poner_palabra(list(palabra), self._espacios[espacio_max], window)
+        if len(self._espacios.keys()) > 0 and espacio_max >= len(palabra):  # si hay espacios y la palabra entra en el espacio maximo
+            self._poner_palabra(list(palabra), self._espacios[espacio_max], window)  # pongo la palabra
+            juez._calcular_puntaje(list(palabra), self._espacios[espacio_max], "maquina")
             return True  # devuelvo si pude poner la palabra
         else:
             return False
@@ -241,11 +242,12 @@ class Maquina():
         Recorre la lista donde se van a ubicar las letras
         y actualiza el tablero.
         """
-        for i in range(len(letras)):  # desde i hasta la cantidad de las posiciones
-            # time.sleep(1)
-            window[posiciones[i]].update(letras[i])  # modifico la letra en la posicion elegida
-        self._eliminar_letras(letras)  # elimino la letra que agregue de la lista de letras
-        return True
+        try:
+            for i in range(len(letras)):  # desde i hasta la cantidad de letras
+                # time.sleep(1)
+                window[posiciones[i]].update(letras[i])  # modifico la letra en la posicion elegida
+            self._eliminar_letras(letras)  # elimino la letra que agregue de la lista de letras
+            return True
 
 # clasificaciones posibles para adjetivos y verbos
 TIPO = {'adj': ["AO", "JJ", "AQ", "DI", "DT"],
