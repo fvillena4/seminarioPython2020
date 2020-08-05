@@ -68,6 +68,7 @@ class Maquina():
     def agregar_letras(self, nuevas_letras):
         # nuevas_letras = list(map(str.upper(), nuevas_letras)))
         self._letras.extend(nuevas_letras)
+        sg.Popup("Las letras de la maquina son: "+str(self._letras))
 
     def armo_palabra(self):
         """Arma palabras combinando todas las letras.
@@ -245,10 +246,8 @@ class Maquina():
                         palabra = i  # guardo la palabra mas grande posible
                         break  # salgo del ciclo
             if len(self._espacios.keys()) > 0 and espacio_max >= len(palabra):  # si hay espacios y la palabra entra en el espacio maximo
-                self._poner_palabra(list(palabra), self._espacios[espacio_max], window)  # pongo la palabra
-                puntos = juez._calcular_puntaje(list(palabra), self._espacios[espacio_max], "maquina")
-                sg.Popup("El puntaje de la palabra es de :"+str(puntos)+" .Acumulas "+str(juez._jugadores["maquina"])+" puntos.")
-                puse_pal = True, ""  # devuelvo si pude poner la palabra
+                puse_pal, pos_usadas = self._poner_palabra(list(palabra), self._espacios[espacio_max], window)  # pongo la palabra
+                puntos = juez._calcular_puntaje(list(palabra), pos_usadas, "maquina")
             elif not puse_pal:
                 self.elegir_posicion_col(posiciones)
         return puse_pal, "no hay espacios"
@@ -266,11 +265,16 @@ class Maquina():
         y actualiza el tablero.
         """
         letras_mayus = list(map(lambda x : x.upper(), letras))
+        pos_usadas = []
         for i in range(len(letras)):  # desde i hasta la cantidad de letras
             # time.sleep(1)
             window[posiciones[i]].update(letras_mayus[i])  # modifico la letra en la posicion elegida
+            pos_usadas.append(posiciones[i])
         self._eliminar_letras(letras)  # elimino la letra que agregue de la lista de letras
-        return True
+        if pos_usadas:
+            return True, pos_usadas
+        else:
+            return False, pos_usadas
 
 # clasificaciones posibles para adjetivos y verbos
 # TIPO = {'adj': ["AO", "JJ", "AQ", "DI", "DT"],

@@ -96,27 +96,29 @@ while not final:
     elif not comenzo:
         sg.popup_ok("Para comenzar oprima el boton iniciar")
     if comenzo:
-        while not final:
-            if event == None or event == "fin-partida":
+        #while not final:
+        if event == None or event == "fin-partida":
+            final = True
+            sg.Popup("Termino la partida, porque puso fin el usuario.")
+            break
+        if(juez.turno == nombre):
+            jugador.jugar(window, juez, bolsa)
+            agregue = jugador._agregar_letras(window, bolsa)
+            if not agregue:
+                sg.Popup("No se pudo agregar letras.")
+                sg.Popup("Termino la partida, porque no hay mas letras.")
                 final = True
-                sg.Popup("Termino la partida. Por que puso fin al usuario.")
-                break
-            if(juez.turno == nombre):
-                jugador.jugar(window, juez, bolsa)
-                final = not (jugador._agregar_letras(window, bolsa))
-                if final:
-                    sg.Popup("Termino la partida, porque no hay mas letras en al bolsa")
-            if(juez.turno == "maquina"):
-                jugue, motivo = guido._jugar(window, juez, config)
-                if not jugue:
-                    if motivo == "no hay espacios":
-                        final = True
-                        sg.Popup("Termino la partida por la maquina no encontro espacio.")
-                    elif motivo == "no hay palabras validas":
-                        juez.turno = nombre
-                else:
-                    guido.agregar_letras(bolsa.sacar_letras(7-len(guido.letras)))
+        if(juez.turno == "maquina"):
+            jugue, motivo = guido._jugar(window, juez, config)
+            if not jugue:
+                if motivo == "no hay espacios":
+                    final = True
+                    sg.Popup("Termino la partida por la maquina no encontro espacio.")
+                elif motivo == "no hay palabras validas":
                     juez.turno = nombre
+            else:
+                guido.agregar_letras(bolsa.sacar_letras(7-len(guido.letras)))
+                juez.turno = nombre
 podio = juez._determinar_ganador()
 if 0 in podio.keys():
     sg.Popup("Hubo un empate con: "+str(podio[0][0][1])+" puntos.")

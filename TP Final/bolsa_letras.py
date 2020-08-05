@@ -1,6 +1,6 @@
 """Este modulo contiene a la clase bolsa que se encargara de dar las letras."""
 import random
-
+import PySimpleGUI as sg
 
 class Bolsa():
     """Clase Bolsa que genera letras y verifica si esta vacia.
@@ -36,7 +36,7 @@ class Bolsa():
         Recorro el abecedario y si ya no hay ninguna letra devuelvo true
         """
         for i in self._ABC.keys():  # recorro de i=0 hasta la longitud del abecedario
-            if self._ABC[i] > 0:  # si la cantidad en i es distinta de 0
+            if self._ABC[i] > 0:  # si la cantidad en i es mayor 0
                 return False
         return True
 
@@ -53,6 +53,7 @@ class Bolsa():
                 letras.append(una_letra)  # agrego la letra a la lista de letras
                 self._ABC[una_letra] = self._ABC[una_letra] - 1  # disminuyo en uno la cantidad de esa letra
             elif self.esta_vacia():  # sino si la bolsa esta vacia
+                sg.Popup("La bolsa esta vacia."+str(self._ABC.values()))
                 break  # rompo el loop
         return letras  # devuelvo la lista de letras
 

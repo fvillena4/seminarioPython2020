@@ -89,9 +89,11 @@ class Juez():
         puntaje = 0  # inicializo el puntaje de la palabra
         if len(letras_palabra) == len(posiciones):
             for i in range(len(letras_palabra)):  # recorro la lista de letras de palabra
-                puntaje = self._tabla_puntaje[letras_palabra[i]] * self._multiplicadores[posiciones[i]]  # actualizo el puntaje
+                # sg.Popup("El valor de la letra "+str(letras_palabra[i])+" es de "+str(self._tabla_puntaje[letras_palabra[i]]),
+                #          " y el multiplicador de la pos "+str(posiciones[i])+" es de "+str(self._multiplicadores[posiciones[i]]))
+                puntaje = puntaje + (self._tabla_puntaje[letras_palabra[i]] * self._multiplicadores[posiciones[i]])  # actualizo el puntaje
         self._jugadores[id] = self._jugadores[id] + puntaje  # actualizo el puntaje del jugador
-        sg.Popup(self._jugadores[id])
+        sg.Popup("El puntaje de "+str(id)+" es de "+str(self._jugadores[id]))
         return puntaje  # devuelve el puntaje
 
     def _determinar_ganador(self):
