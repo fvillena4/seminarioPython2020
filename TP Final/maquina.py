@@ -24,11 +24,16 @@ class Maquina():
     _palabras_validas = list()
     _palabras_adj_verb = list()
     _espacios = dict()
+    _filas = int()
+    _columnas = int()
 
-    def __init__(self, unas_letras, un_nivel='facil'):
+    def __init__(self, unas_letras, un_nivel='facil', filas=8, columnas=8):
         """Inicializa (Constructor) la maquina."""
         self._nivel = un_nivel  # recibo un nivel (facil,medio,dificil) para saber como tiene que jugar la maquina
+        unas_letras = list(map(lambda x : x.lower(), unas_letras))
         self._letras = unas_letras
+        self._filas = filas
+        self._columnas = columnas
 
     @property
     def nivel(self):
@@ -61,6 +66,7 @@ class Maquina():
         del self._letras
 
     def agregar_letras(self, nuevas_letras):
+        # nuevas_letras = list(map(str.upper(), nuevas_letras)))
         self._letras.extend(nuevas_letras)
 
     def armo_palabra(self):
@@ -81,20 +87,22 @@ class Maquina():
 
         Se comunica con el Juez y le pregunta si es una pregunta valida
         y si lo es la agrega.
-        Devuelve la lista de palabras vallidas segun el nivel
+        Devuelve la lista de palabras validas segun el nivel
         """
         if(self._nivel == "facil"):  # si el nivel es facil
             palabras_facil = []
             for i in palabras:
                 if juez._validar(i):  # si el juez considera que es una palabra
                     palabras_facil.append(i)  # la agrego
-            return palabras_facil
+            self._palabras_validas = palabras_facil
+            # return palabras_facil
         else:  # si el nivel es medio o dificil
             palabras_medio_dificil = []
             for i in palabras:
                 if juez._validar(i):  # devuelvo si es palabra
                     palabras_medio_dificil.append(i)
-            return palabras_medio_dificil
+            self._palabras_adj_verb = palabras_medio_dificil
+            # return palabras_medio_dificil
 
     def sigue_fila(self, act, sig):
         """Verifica si mantiene la fila y mueve la columna.
@@ -122,8 +130,8 @@ class Maquina():
         letras (casilleros vacios).
         """
         posiciones = []  # inicializo una lista de posiciones vacia
-        for i in range(FILAS):  # de 0 hasta las filas
-            for j in range(COLUMNAS):  # de 0 hasta las columnas
+        for i in range(self._filas):  # de 0 hasta las filas
+            for j in range(self._columnas):  # de 0 hasta las columnas
                 pos = (i, j)  # armo una tupla con i(filas),j(columnas) que representa la posicion
                 if (window.FindElement(pos).GetText() == " "):  # si el texto del elemento 'pos' es ' '(vacio)
                     posiciones.append(pos)  # agrego la posicion a la lista de posiciones
@@ -199,36 +207,51 @@ class Maquina():
         self._espacios = espacios_palabra
         return espacios_palabra
 
-    def _jugar(self, window):
+    def _jugar(self, window, juez, config):
         """Elige la mejor palabra y busca el espacio mas grande.
 
         En el nivel facil: elijo la 1ª palabra posible que encuentre
         En los otros niveles: elijo la palabra mas grande posible.
         Devuelvo True si pude poner la palabra o False si no.
         """
-        palabra = ""
-        if (self._espacios.keys()):  # si hay espacios
-            espacio_max = max(list(self._espacios.keys()))  # me quedo con el mayor espacio disponible
+        combinaciones = self.armo_palabra()
+        self._validar_palabras(combinaciones, juez)
+        if self.nivel == "facil":
+            if not self._palabras_validas:
+                return False, "no hay palabras validas"
         else:
-            espacio_max = 0  # sino el espacio maximo es 0
-        if self._nivel == "facil" and espacio_max != 0:
-            for i in self._palabras_validas:  # recorro las palabras validas
-                if espacio_max >= len(i):  # si encuentro un lugar donde pueda entrar
-                    palabra = i  # guardo la 1ª palabra que cumpla la condición
-                    break  # salgo del ciclo
-        elif (self._nivel == "medio" or self._nivel == "dificil") and espacio_max != 0:
-            adj_verb = sorted(self._palabras_adj_verb, key=len, reverse=True)  # creo una variable auxiliar con la lista de palabras ordenadas de mayora a menor
-            for i in adj_verb:
-                if espacio_max >= len(palabra):  # si encuentro un lugar donde pueda entrar
-                    palabra = i  # guardo la palabra mas grande posible
-                    break  # salgo del ciclo
-        if len(self._espacios.keys()) > 0 and espacio_max >= len(palabra):  # si hay espacios y la palabra entra en el espacio maximo
-            self._poner_palabra(list(palabra), self._espacios[espacio_max], window)  # pongo la palabra
-            juez._calcular_puntaje(list(palabra), self._espacios[espacio_max], "maquina")
-            return True  # devuelvo si pude poner la palabra
-        else:
-            return False
-
+            if not self._palabras_adj_verb:
+                return False, "no hay palabras validas"
+        posiciones = self.buscar_espacio(window)
+        self.elegir_posicion_fila(posiciones)
+        puse_pal = False
+        for i in range(2):
+            if puse_pal:
+                break
+            palabra = ""
+            if (self._espacios.keys()):  # si hay espacios
+                espacio_max = max(list(self._espacios.keys()))  # me quedo con el mayor espacio disponible
+            else:
+                espacio_max = 0  # sino el espacio maximo es 0
+            if self._nivel == "facil" and espacio_max != 0:
+                for i in self._palabras_validas:  # recorro las palabras validas
+                    if espacio_max >= len(i):  # si encuentro un lugar donde pueda entrar
+                        palabra = i  # guardo la 1ª palabra que cumpla la condición
+                        break  # salgo del ciclo
+            elif (self._nivel == "medio" or self._nivel == "dificil") and espacio_max != 0:
+                adj_verb = sorted(self._palabras_adj_verb, key=len, reverse=True)  # creo una variable auxiliar con la lista de palabras ordenadas de mayor a menor
+                for i in adj_verb:
+                    if espacio_max >= len(palabra):  # si encuentro un lugar donde pueda entrar
+                        palabra = i  # guardo la palabra mas grande posible
+                        break  # salgo del ciclo
+            if len(self._espacios.keys()) > 0 and espacio_max >= len(palabra):  # si hay espacios y la palabra entra en el espacio maximo
+                self._poner_palabra(list(palabra), self._espacios[espacio_max], window)  # pongo la palabra
+                puntos = juez._calcular_puntaje(list(palabra), self._espacios[espacio_max], "maquina")
+                sg.Popup("El puntaje de la palabra es de :"+str(puntos)+" .Acumulas "+str(juez._jugadores["maquina"])+" puntos.")
+                puse_pal = True, ""  # devuelvo si pude poner la palabra
+            elif not puse_pal:
+                self.elegir_posicion_col(posiciones)
+        return puse_pal, "no hay espacios"
 
     def _eliminar_letras(self, letras):
         """Elimina las letras disponibles de la maquina """
@@ -242,76 +265,76 @@ class Maquina():
         Recorre la lista donde se van a ubicar las letras
         y actualiza el tablero.
         """
-        try:
-            for i in range(len(letras)):  # desde i hasta la cantidad de letras
-                # time.sleep(1)
-                window[posiciones[i]].update(letras[i])  # modifico la letra en la posicion elegida
-            self._eliminar_letras(letras)  # elimino la letra que agregue de la lista de letras
-            return True
+        letras_mayus = list(map(lambda x : x.upper(), letras))
+        for i in range(len(letras)):  # desde i hasta la cantidad de letras
+            # time.sleep(1)
+            window[posiciones[i]].update(letras_mayus[i])  # modifico la letra en la posicion elegida
+        self._eliminar_letras(letras)  # elimino la letra que agregue de la lista de letras
+        return True
 
 # clasificaciones posibles para adjetivos y verbos
-TIPO = {'adj': ["AO", "JJ", "AQ", "DI", "DT"],
-        'verb': ["VAG", "VBG", "VAI", "VAN", "MD", "VAS", "VMG", "VMI", "VB",
-                 "VMM", "VMN", "VMP", "VBN", "VMS", "VSG",
-                 "VSI", "VSN", "VSP", "VSS"]
-        }
+# TIPO = {'adj': ["AO", "JJ", "AQ", "DI", "DT"],
+#         'verb': ["VAG", "VBG", "VAI", "VAN", "MD", "VAS", "VMG", "VMI", "VB",
+#                  "VMM", "VMN", "VMP", "VBN", "VMS", "VSG",
+#                  "VSI", "VSN", "VSP", "VSS"]
+#         }
 
 
-def clasifico(palabra, clasificacion):
-    """Función que recibe una palabra y verifica que sea adjetivo o verbo.
-
-    Parametros=
-        :palabra: es un string
-        :clasificacion: un diccionario que tiene las clasficaciones que busco
-    Devuelve True si está dentro de la clasificación, False caso contrario.
-    """
-    palabra_parseada = (ptn.parse(palabra)).split()  # parseo la palabra y la divido
-    for cada in palabra_parseada:
-        for i in cada:
-            for tipo in clasificacion:
-                if i[1] in clasificacion[tipo]:
-                    return True
-    return False
-
-
-def es_palabra(palabra):
-    """Verifica si es una palabra válida segun los diccionarios de pattern.
-
-    Recibe palabra que es un string
-    devuelve True si es, False caso contrario.
-    """
-    return palabra in ptn.lexicon and palabra in ptn.spelling
-
-
-# lista_letras = ['a', 'e', 'b', 'a', 's', 'c', 'm']
-
-bolsa = Bolsa()
-lista_letras = bolsa.sacar_letras(7)
-guido = Maquina(unas_letras=lista_letras, un_nivel="dificil")
-arbitro = Juez("dificil")
-layout = [[sg.Button(" ", size=(2, 2), key=(i, j), pad=(1, 1)) for j in range(FILAS)] for i in range(COLUMNAS)]
-window = sg.Window('Tablero', layout, resizable=True, element_justification='c')
-
-while True:
-    lista_palabras = guido.armo_palabra()
-    guido._palabras_adj_verb = guido._validar_palabras(lista_palabras, arbitro)
-    # guido._palabras_adj_verb = []
-    # guido._palabras_validas = []
-    # for pal in lista_palabras:
-    #     if es_palabra(pal):
-    #         guido._palabras_validas.append(pal)
-    #         if clasifico(pal, TIPO):
-    #             guido._palabras_adj_verb.append(pal)
-    event, values = window.Read()
-    for i in range(4):
-        for j in range(4):
-            event = i, j
-            window.FindElement(event).Update(event)
-    lista = guido.buscar_espacio(window)
-    espacios = guido.elegir_posicion_fila(lista)
-    juge = guido._jugar(window)
-    if not juge:
-        espacios = guido.elegir_posicion_col(lista)
-        juge = guido._jugar(window)
-    guido.agregar_letras(bolsa.sacar_letras(7-len(guido.letras)))
-    # break
+# def clasifico(palabra, clasificacion):
+#     """Función que recibe una palabra y verifica que sea adjetivo o verbo.
+#
+#     Parametros=
+#         :palabra: es un string
+#         :clasificacion: un diccionario que tiene las clasficaciones que busco
+#     Devuelve True si está dentro de la clasificación, False caso contrario.
+#     """
+#     palabra_parseada = (ptn.parse(palabra)).split()  # parseo la palabra y la divido
+#     for cada in palabra_parseada:
+#         for i in cada:
+#             for tipo in clasificacion:
+#                 if i[1] in clasificacion[tipo]:
+#                     return True
+#     return False
+#
+#
+# def es_palabra(palabra):
+#     """Verifica si es una palabra válida segun los diccionarios de pattern.
+#
+#     Recibe palabra que es un string
+#     devuelve True si es, False caso contrario.
+#     """
+#     return palabra in ptn.lexicon and palabra in ptn.spelling
+#
+#
+# # lista_letras = ['a', 'e', 'b', 'a', 's', 'c', 'm']
+#
+# bolsa = Bolsa()
+# lista_letras = bolsa.sacar_letras(7)
+# guido = Maquina(unas_letras=lista_letras, un_nivel="dificil")
+# arbitro = Juez("dificil")
+# layout = [[sg.Button(" ", size=(2, 2), key=(i, j), pad=(1, 1)) for j in range(FILAS)] for i in range(COLUMNAS)]
+# window = sg.Window('Tablero', layout, resizable=True, element_justification='c')
+#
+# while True:
+#     lista_palabras = guido.armo_palabra()
+#     guido._palabras_adj_verb = guido._validar_palabras(lista_palabras, arbitro)
+#     # guido._palabras_adj_verb = []
+#     # guido._palabras_validas = []
+#     # for pal in lista_palabras:
+#     #     if es_palabra(pal):
+#     #         guido._palabras_validas.append(pal)
+#     #         if clasifico(pal, TIPO):
+#     #             guido._palabras_adj_verb.append(pal)
+#     event, values = window.Read()
+#     for i in range(4):
+#         for j in range(4):
+#             event = i, j
+#             window.FindElement(event).Update(event)
+#     lista = guido.buscar_espacio(window)
+#     espacios = guido.elegir_posicion_fila(lista)
+#     juge = guido._jugar(window)
+#     if not juge:
+#         espacios = guido.elegir_posicion_col(lista)
+#         juge = guido._jugar(window)
+#     guido.agregar_letras(bolsa.sacar_letras(7-len(guido.letras)))
+#      break

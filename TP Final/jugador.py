@@ -14,22 +14,46 @@ class Jugador():
     _nivel = str()
     _letras = dict()  # claves=posicion del atril y valores=letras
 
-    def __init__(self, un_nombre, unas_letras, un_nivel="facil"):
+    def __init__(self, un_nombre, unas_letras, un_nivel, filas, columnas):
         """Inicializa (Constructor) de la clase."""
         self.nombre = un_nombre
         self._nivel = un_nivel
         self._letras = unas_letras
+        # self._filas = filas
+        # self._columnas = columnas
+        self._cant_cambios = 0
 
-    def _agregar_letras(self, nuevas_letras):
-        self._letras.extend(nuevas_letras)
+    @property
+    def letras(self):
+        return self._letras.values()
+
+    @property
+    def cant_cambios(self):
+        return self._cant_cambios
+
+    def _agregar_letras(self, window, bolsa):
+        pos_letras = []
+        for i in self._letras.keys():
+            if window[i].GetText() == " ":
+                pos_letras.append(i)
+        letras_nuevas = bolsa.sacar_letras(len(pos_letras))
+        if letras_nuevas == len(pos_letras):
+            for i in range(len(pos_letras)):
+                self._letras[pos_letras[i]] = letras_nuevas[i]
+                window[pos_letras[i]].Update(letras_nuevas[i])
+            return True
+        elif len(letras_nuevas) < len(pos_letras):
+            return False
 
     def sigue(self, posiciones, nueva_pos):
         "Verifica que siga en horizontal o vertical pero no las dos a la vez."
         if posiciones:  # si hay elementos en la lista de posiciones
             ult = posiciones[len(posiciones)-1]  # agarro al ultimo de la lista
-            if ult[0][0]+1 == nueva_pos[0] and ult[0][1] == nueva_pos[1]:  # si sigue en la misma columna y avanza por fila
-                return True
-            elif ult[0][0] == nueva_pos[0] and ult[0][1]+1 == nueva_pos[1]:  # si sigue en la misma fila y avanza por columna
+            if (ult[0]+1 == nueva_pos[0] and ult[1] == nueva_pos[1]) or (ult[0] == nueva_pos[0] and ult[1]+1 == nueva_pos[1]):  # si sigue en la misma columna y avanza por fila
+                if len(posiciones) >= 2:
+                    ante_ult = posiciones[len(posiciones)-2]
+                    if (ante_ult[0]+1 == nueva_pos[0] and ante_ult[1]+1 == nueva_pos[1]) or (ante_ult[0]+1 == nueva_pos[0] and ante_ult[1]+1 == nueva_pos[1]):
+                        return False
                 return True
             else:
                 return False
@@ -38,7 +62,6 @@ class Jugador():
 
     def resetear(self, posiciones, window):
         """Deshace todo los movimientos que hice en el turno."""
-        print(posiciones)
         for i in posiciones:  # recorro las posiciones en las que agregue letras
             window[i].Update(disabled=False)  # las habilito
             window.FindElement(i).Update(" ")  # las actualizo para que esten vacias
@@ -46,6 +69,7 @@ class Jugador():
         for k in self._letras.keys():  # recorro las letras
             window[k].Update(disabled=False)  # las habilito
             window[k].Update(self._letras[k])  # devuelvo cada letra a su lugar
+            window[k].Update(button_color=('black', 'lightblue'))
         window.Refresh()
         return [], []  # devuelvo listas vacias para las palabras y posiciones
 
@@ -55,10 +79,10 @@ class Jugador():
         Permite elegir la cantidad de letras a cambiar.
         """
         letras_cambiar = {}  # creo un diccionario vacio; claves=posiciones de las letras y valores=letras a cambiar
-        window[("vaciar"), ].set_size((9, 3))
-        window[("vaciar"), ].Update("Deshacer cambio de letras.")
-        window[("cambio"), ].set_size((9, 3))
-        window[("cambio"), ].Update("Cambiar "+str(len(letras_cambiar))+" letras.")
+        window[("vaciar")].set_size((9, 3))
+        window[("vaciar")].Update("Deshacer cambio de letras.")
+        window[("cambio")].set_size((9, 3))
+        window[("cambio")].Update("Cambiar "+str(len(letras_cambiar))+" letras.")
         fin = False
         sg.Popup("Ingrese las letras que quiere cambiar.",
                  "Cuando finalize oprima Cambiar letras nuevamente.",
@@ -69,17 +93,16 @@ class Jugador():
                 break
             letra = window.FindElement(event).GetText()  # obtengo el texto del evento
             if event in self._letras.keys() and letra in self._letras.values():  # si esta dentro de mis letras
-                print(event in letras_cambiar.keys())
                 if len(letras_cambiar) < 7 and event not in letras_cambiar.keys():  # si la cantidad de letras a cambiar es menor que 7 y no elegi esa letra para cambiar(evitar cambiar varias veces la misma letra)
                     letras_cambiar[event] = letra  # actualizo el diccionario de las letras a cambiar
                     window[event].Update(button_color=('red', 'lightblue'))  # cambio el color para que el usuario note que letras ya eligio
                     sg.popup("Las letras a cambiar son: "+str(list(letras_cambiar.values())))  # informo que letras by a cambiar
-                    window[("cambio"), ].Update("Cambiar "+str(len(letras_cambiar))+" letras.")  # actualizo el boton de cambiar
+                    window[("cambio")].Update("Cambiar "+str(len(letras_cambiar))+" letras.")  # actualizo el boton de cambiar
                 elif not len(letras_cambiar) < 7:  # si quiero cambiar mas de la cantidad de mis letras
                     sg.popup("No puede cambiar mas de la cantidad de sus letras.")
                 elif event in letras_cambiar.keys():  #  si la posicion de la letra ya se encuentra
                     sg.popup("No puede cambiar la misma letra 2 veces")
-            elif event[0] == "cambio":  # si quiero cambiar
+            elif event == "cambio":  # si quiero cambiar
                 if len(letras_cambiar) > 0:  # si tengo alguna letra que cambiar
                     letras_viejas = list(letras_cambiar.values())  # uso una variable auxiliar para las letras viejas
                     pos_letras = list(letras_cambiar.keys())  # uso una variable auxiliar para las posiciones
@@ -89,20 +112,27 @@ class Jugador():
                             window[pos_letras[i]].Update(letras_nuevas[i])  # actualizo las posiciones con las letras nuevas
                             window[pos_letras[i]].Update(button_color=('black', 'lightblue'))
                         self._letras.update(dict(zip(pos_letras, letras_nuevas)))  # actualizo las letras del jugador
-                        window[("vaciar"), ].set_size((5, 3))
-                        window[("vaciar"), ].Update("Deshacer")
-                        window[("cambio"), ].set_size((5, 3))
-                        window[("cambio"), ].Update("Cambiar letras")
+                        window[("vaciar")].set_size((5, 3))
+                        window[("vaciar")].Update("Deshacer")
+                        window[("cambio")].set_size((5, 3))
+                        window[("cambio")].Update("Cambiar letras")
                         fin = True  # termino
+                        self._cant_cambios += 1
+                    elif len(letras_nuevas) < len(letras_viejas):
+                        return True
+                        sg.Popup("No hay suficientes letras en la bolsa.")
                 else:
                     sg.popup("No eligio letras a cambiar")
-            elif event[0] == "vaciar":
-                window[("vaciar"), ].set_size((5, 3))
-                window[("vaciar"), ].Update("Deshacer")
-                window[("cambio"), ].set_size((5, 3))
-                window[("cambio"), ].Update("Cambiar letras")
+            elif event == "vaciar":
+                pos_letras = list(letras_cambiar.keys())  # uso una variable auxiliar para las posiciones
+                for i in pos_letras:
+                    window[i].Update(button_color=('black', 'lightblue'))
+                window[("vaciar")].set_size((5, 3))
+                window[("vaciar")].Update("Deshacer")
+                window[("cambio")].set_size((5, 3))
+                window[("cambio")].Update("Cambiar letras")
                 fin = True  # termino
-            elif not(event[0] in self._letras.keys() and letra in self._letras.values()):
+            elif not(event in self._letras.keys() and letra in self._letras.values()):
                 sg.popup("Esa no es una letra valida.")
 
     def _verificar_juez(self, palabra, juez):
@@ -122,17 +152,14 @@ class Jugador():
         posiciones = []  # incializo una lista vacia donde van las posiciones de las letras que agregue
         while not fin:  # mientras no haya terminado
             event, values = window.Read()  # leo event, values
-            # color = window[event].Get()
-            # sg.Popup(color)
             if (event == None):  # si el evento es salir
                 break  # rompo el ciclo
             letra = window.FindElement(event).GetText()  # obtengo el texto del evento
             event_letra = event  # guardo el evento de la letra que tome
-            print("la letra es "+str(letra))
-            print(event_letra in self._letras.keys() and letra in self._letras.values())
             if event_letra in self._letras.keys() and letra in self._letras.values():  # si esta en mis letras
+                window[event_letra].Update(button_color=('white', 'lightblue'))
                 event, values = window.Read()  # leo un lugar donde voy a poner la letra
-                if(window.FindElement(event).GetText() == " ") and (event not in self._letras.keys() and self.sigue(posiciones, event[0])):  # si esta vacio y no es el espacio de una letra y sigue(col o fila)
+                if(window.FindElement(event).GetText() == " ") and (event not in self._letras.keys() and self.sigue(posiciones, event)):  # si esta vacio y no es el espacio de una letra y sigue(col o fila)
                     window.FindElement(event).Update(letra)  # pongo la letra en el casillero vacio
                     palabra.append(letra)  # agrego la letra a palabra
                     posiciones.append(event)  # agrego la posicion donde la agregamos
@@ -144,17 +171,23 @@ class Jugador():
                     sg.popup("La palabra debe ingresarse ordenada.(Horizontal o Vertical)")
                 else:  # si es un espacio ocupado
                     sg.popup("Ese es un espacio ocupado.Elija otro espacio.")
-            # print("la Palabra es "+str(palabra))
-            # print("las posiciones son "+str(posiciones))
-            elif event[0] == "vaciar":  # si me equivoque y quiero que me devuelva todas las letras
+                window[event_letra].Update(button_color=('white', 'lightblue'))
+            elif event == "vaciar":  # si me equivoque y quiero que me devuelva todas las letras
                 palabra, posiciones = self.resetear(posiciones, window)
-            elif event[0] == "cambio":  # si quiero cambiar las letras
-                self.cambiar_letras(window, bolsa)
-            elif event[0] == "fin-turno":  # si quiero terminar el turno
+            elif event == "cambio":  # si quiero cambiar las letras
+                if self._cant_cambios < 3:
+                    self.cambiar_letras(window, bolsa)
+                else:
+                    sg.Popup("Ya uso los 3 cambios de letras permitidos.")
+            elif event == "fin-turno":  # si quiero terminar el turno
                 if len(palabra) >= 2:  # si la palabra tiene 2 o mas letras
                     if self._verificar_juez(palabra, juez):  # la verifico con el juez
                         juez.turno = "maquina"  # le doy el turno a la maquina
+                        for i in posiciones:
+                            self._letras[i] = " "
                         fin = True  # termine mi turno
+                        puntos = juez._calcular_puntaje(palabra, posiciones, self.nombre)
+                        sg.Popup("El puntaje de la palabra es de :"+str(puntos)+" .Acumulas "+str(juez._jugadores[self.nombre])+" puntos.")
                     else:  # si no es una palabra valida
                         palabra, posiciones = self.resetear(posiciones, window)  # devuelvo las letras usadas
                 else:

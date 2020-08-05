@@ -7,15 +7,17 @@ from jugador import Jugador
 from juez import Juez
 import crear_layout as crear
 import menu
+from maquina import Maquina
 
 
 def iniciar(nombre):
     x = random.randint(0, 1)
     if x == 0:
         sg.popup_ok("Comienza el jugador: " + nombre)
+        return True, nombre
     else:
         sg.popup_ok("Comienza a jugar la maquina")
-    return True
+        return True, "maquina"
 
 
 def verificarPalabra(palabra):
@@ -55,10 +57,12 @@ def posicionesPalabra(pos_actual, posiciones, window, event):
 
 # tab = Tablero()
 # layout = tab.config_tablero()
-bolsa = Bolsa()
-letras = bolsa.sacar_letras(7)
 layout = menu.layout
 config = menu.config
+bolsa = Bolsa(un_ABC=config["cant_letras"])
+letras_jugador = bolsa.sacar_letras(7)
+letras_maquina = bolsa.sacar_letras(7)
+guido = Maquina(unas_letras=letras_maquina, un_nivel=config["dificultad"], filas=config["Filas"], columnas=config["Columnas"])
 w, h = sg.Window.get_screen_size()
 window = sg.Window(
     "SCRABBLE",
@@ -69,72 +73,52 @@ window = sg.Window(
     element_justification="c",
     background_color="#143430",
 )
-window.Maximize()
+# window.Maximize()
 a = []
 claves = []
 for j in range(7):
-    clave = ("letra" + str(j),)
-    window[clave].Update(letras[j])
+    clave = "letra" + str(j)
+    window[clave].Update(letras_jugador[j])
     claves.append(clave)
 
-mis_letras = dict(zip(claves, letras))
-b = []
-for j in range(7):
-    b.append(sg.Button("*", size=(3, 3), key=("letraM",), button_color=("white", "blue")))
-
-layout.append(a)
-layout.insert(0, b)
-layout.append(
-    [
-        sg.Button(
-            "Iniciar",
-            key=("iniciar",),
-            border_width=5,
-            button_color=("white", "green"),
-            size=(3, 3),
-            font=("Helvetica", 12),
-        ),
-        sg.Button(
-            "Finalizar turno",
-            key=("fin-turno",),
-            border_width=5,
-            button_color=("white", "red"),
-            size=(5, 3),
-            font=("Helvetica", 12),
-        ),
-        sg.Button(
-            "Deshacer",
-            key=("vaciar",),
-            border_width=5,
-            button_color=("black", "pink"),
-            size=(5, 3),
-            pad=((1, 15), 15, 1),
-            font=("Helvetica", 12),
-        ),
-        sg.Button(
-            "Cambiar letras",
-            key=("cambio",),
-            border_width=5,
-            button_color=('black', 'lightblue'),
-            size=(5, 3),
-            pad=((1, 15), 15, 1),
-            font=("Helvetica", 12),
-        ),
-    ]
-)
-posiciones = []  # lista que va a tener las posiciones
-palabra = []  # lista que va a contener la palabra
-juez = Juez("facil")
+mis_letras = dict(zip(claves, letras_jugador))
 comenzo = False
-while True:
+final = False
+while not final:
     event, values = window.Read()
-    if event in None or event[0] == "fin-partida":
+    if event == None or event == "fin-partida":
         break
-    elif event[0] == "iniciar" and not comenzo:
+    elif event == "iniciar" and not comenzo:
         nombre = sg.popup_get_text("Ingrese su nombre: ")
-        jugador = Jugador(nombre, mis_letras)
-        comenzo = iniciar(nombre)
+        jugador = Jugador(nombre, mis_letras, config["dificultad"], config["Filas"], config["Columnas"])
+        comenzo, primero = iniciar(nombre)
+        juez = Juez(config["dificultad"], config['valores_letras'],config["tablero"], nombre, primero)
     elif not comenzo:
         sg.popup_ok("Para comenzar oprima el boton iniciar")
     if comenzo:
-        jugador.jugar(window, juez, bolsa)
+        while not final:
+            if event == None or event == "fin-partida":
+                final = True
+                sg.Popup("Termino la partida. Por que puso fin al usuario.")
+                break
+            if(juez.turno == nombre):
+                jugador.jugar(window, juez, bolsa)
+                final = not (jugador._agregar_letras(window, bolsa))
+                if final:
+                    sg.Popup("Termino la partida, porque no hay mas letras en al bolsa")
+            if(juez.turno == "maquina"):
+                jugue, motivo = guido._jugar(window, juez, config)
+                if not jugue:
+                    if motivo == "no hay espacios":
+                        final = True
+                        sg.Popup("Termino la partida por la maquina no encontro espacio.")
+                    elif motivo == "no hay palabras validas":
+                        juez.turno = nombre
+                else:
+                    guido.agregar_letras(bolsa.sacar_letras(7-len(guido.letras)))
+                    juez.turno = nombre
+podio = juez._determinar_ganador()
+if 0 in podio.keys():
+    sg.Popup("Hubo un empate con: "+str(podio[0][0][1])+" puntos.")
+else:
+    sg.Popup("El ganador es: "+str(podio[1][0])+" con "+str(podio[1][1])+" puntos.")

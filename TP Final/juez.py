@@ -20,10 +20,11 @@ class Juez():
                       "VSI", "VSN", "VSP", "VSS"]
              }
 
-    def __init__(self, un_nivel="facil", una_tabla_puntaje={}, un_jugador="Jugador 1", un_turno="maquina"):
+    def __init__(self, un_nivel="facil", una_tabla_puntaje={}, multiplicadores={}, un_jugador="Jugador 1", un_turno="maquina"):
         """Inicializa(Constructor) la clase Juez."""
         self._nivel = un_nivel
         self._tabla_puntaje = una_tabla_puntaje
+        self._multiplicadores = multiplicadores
         self._jugadores[un_jugador] = 0
         self._jugadores["maquina"] = 0
         self._turno = un_turno
@@ -69,13 +70,14 @@ class Juez():
 
     def _validar(self, palabra):
         """Valida una palabra segun el nivel del juego."""
+        palabra = "".join(list(map(str.lower, palabra)))
         if(self._nivel == "facil"):  # si el nivel es facil
             return self._es_palabra(palabra)  # devuelvo si es palabra
-        else: # si el nivel es medio o dificil
+        else:  # si el nivel es medio o dificil
             if(self._es_palabra(palabra)):  # si es palabra
                 return self._clasifico(palabra)  # devuelvo si es adjetivo o verbo
 
-    def _calcular_puntaje(self, letras_palabra, posiciones, id, window):
+    def _calcular_puntaje(self, letras_palabra, posiciones, id):
         """Calcula el puntaje de una palabra.
         Recibe: letras_palabra que es una lista de las letras de la palabra
                 ingresada, y la ventana para verificar los descuentos
@@ -83,20 +85,20 @@ class Juez():
         Actualiza el puntaje del jugador y la maquina.
         Devuelve: el puntaje de la palabra.
         """
+        letras_palabra = list(map(str.upper, letras_palabra))
         puntaje = 0  # inicializo el puntaje de la palabra
-        for i in letras_palabra:  # recorro la lista de letras de palabra
-            if i in self._tabla_puntaje.keys():  # si i esta en la tabla de puntajes
-                multiplicador = posiciones[i][1]  # obtengo el multiplicador de la letra
-                puntos_letra = self._tabla_puntaje[i] * multiplicador  # calculo la cantidad de puntos totales de la letra
-                puntaje = puntaje + puntos_letra  # actualizo el puntaje
+        if len(letras_palabra) == len(posiciones):
+            for i in range(len(letras_palabra)):  # recorro la lista de letras de palabra
+                puntaje = self._tabla_puntaje[letras_palabra[i]] * self._multiplicadores[posiciones[i]]  # actualizo el puntaje
         self._jugadores[id] = self._jugadores[id] + puntaje  # actualizo el puntaje del jugador
+        sg.Popup(self._jugadores[id])
         return puntaje  # devuelve el puntaje
 
     def _determinar_ganador(self):
         """Determina el ganador del juego.
         Compara los puntajes del jugador y de la maquina"""
         puestos = dict()  # creo un diccionario vacio para los puestos
-        nombres = self._jugadores.keys()  # obtengo los nombres de los jugadores (0= el jugador y 1= la maquina)
+        nombres = list(self._jugadores.keys())  # obtengo los nombres de los jugadores (0= el jugador y 1= la maquina)
         if self._jugadores[nombres[0]] > self._jugadores[nombres[1]]:  # si el jugador(0) tiene mas punto que la maquina(1)
             puestos[1] = [nombres[0], self._jugadores[nombres[0]]]  # puesto1 = jugador , su puntaje (gana el jugador)
             puestos[2] = [nombres[1], self._jugadores[nombres[1]]]  # puesto2 = maquina , su puntaje

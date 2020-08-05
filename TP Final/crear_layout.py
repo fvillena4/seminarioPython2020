@@ -263,7 +263,7 @@ def crear_lyt(evento):
                 sg.Text("     A", size=(5, 1), justification="l", font=("Arial", 15),),
                 sg.Slider(
                     range=(1, 20),
-                    key="cant_A",
+                    key="A",
                     orientation="h",
                     enable_events=True,
                     size=(5, 10),
@@ -273,7 +273,7 @@ def crear_lyt(evento):
                 sg.Text("     B", size=(5, 1), justification="l", font=("Arial", 15),),
                 sg.Slider(
                     range=(1, 20),
-                    key="cant_B",
+                    key="B",
                     orientation="h",
                     enable_events=True,
                     size=(5, 10),
@@ -283,7 +283,7 @@ def crear_lyt(evento):
                 sg.Text("     C", size=(5, 1), justification="l", font=("Arial", 15),),
                 sg.Slider(
                     range=(1, 20),
-                    key="cant_C",
+                    key="C",
                     orientation="h",
                     enable_events=True,
                     size=(5, 10),
@@ -294,7 +294,7 @@ def crear_lyt(evento):
                 sg.Text("     D", size=(5, 1), justification="l", font=("Arial", 15),),
                 sg.Slider(
                     range=(1, 20),
-                    key="cant_D",
+                    key="D",
                     orientation="h",
                     enable_events=True,
                     size=(5, 10),
@@ -304,7 +304,7 @@ def crear_lyt(evento):
                 sg.Text("     E", size=(5, 1), justification="l", font=("Arial", 15),),
                 sg.Slider(
                     range=(1, 20),
-                    key="cant_E",
+                    key="E",
                     orientation="h",
                     enable_events=True,
                     size=(5, 10),
@@ -314,7 +314,7 @@ def crear_lyt(evento):
                 sg.Text("     F", size=(5, 1), justification="l", font=("Arial", 15),),
                 sg.Slider(
                     range=(1, 20),
-                    key="cant_F",
+                    key="F",
                     orientation="h",
                     enable_events=True,
                     size=(5, 10),
@@ -325,7 +325,7 @@ def crear_lyt(evento):
                 sg.Text("     G", size=(5, 1), justification="l", font=("Arial", 15),),
                 sg.Slider(
                     range=(1, 20),
-                    key="cant_G",
+                    key="G",
                     orientation="h",
                     enable_events=True,
                     size=(5, 10),
@@ -335,7 +335,7 @@ def crear_lyt(evento):
                 sg.Text("     H", size=(5, 1), justification="l", font=("Arial", 15),),
                 sg.Slider(
                     range=(1, 20),
-                    key="cant_H",
+                    key="H",
                     orientation="h",
                     enable_events=True,
                     size=(5, 10),
@@ -345,7 +345,7 @@ def crear_lyt(evento):
                 sg.Text("     I", size=(5, 1), justification="l", font=("Arial", 15),),
                 sg.Slider(
                     range=(1, 20),
-                    key="cant_I",
+                    key="I",
                     orientation="h",
                     enable_events=True,
                     size=(5, 10),
@@ -356,7 +356,7 @@ def crear_lyt(evento):
                 sg.Text("     J", size=(5, 1), justification="l", font=("Arial", 15),),
                 sg.Slider(
                     range=(1, 20),
-                    key="cant_J",
+                    key="J",
                     orientation="h",
                     enable_events=True,
                     size=(5, 10),
@@ -366,7 +366,7 @@ def crear_lyt(evento):
                 sg.Text("     K", size=(5, 1), justification="l", font=("Arial", 15),),
                 sg.Slider(
                     range=(1, 20),
-                    key="cant_K",
+                    key="K",
                     orientation="h",
                     enable_events=True,
                     size=(5, 10),
@@ -376,7 +376,7 @@ def crear_lyt(evento):
                 sg.Text("     L", size=(5, 1), justification="l", font=("Arial", 15),),
                 sg.Slider(
                     range=(1, 20),
-                    key="cant_L",
+                    key="L",
                     orientation="h",
                     enable_events=True,
                     size=(5, 10),
@@ -387,7 +387,7 @@ def crear_lyt(evento):
                 sg.Text("     M", size=(5, 1), justification="l", font=("Arial", 15),),
                 sg.Slider(
                     range=(1, 20),
-                    key="cant_M",
+                    key="M",
                     orientation="h",
                     enable_events=True,
                     size=(5, 10),
@@ -397,7 +397,7 @@ def crear_lyt(evento):
                 sg.Text("     N", size=(5, 1), justification="l", font=("Arial", 15),),
                 sg.Slider(
                     range=(1, 20),
-                    key="cant_N",
+                    key="N",
                     orientation="h",
                     enable_events=True,
                     size=(5, 10),
@@ -407,7 +407,7 @@ def crear_lyt(evento):
                 sg.Text("     Ñ", size=(5, 1), justification="l", font=("Arial", 15),),
                 sg.Slider(
                     range=(1, 20),
-                    key="cant_Ñ",
+                    key="Ñ",
                     orientation="h",
                     enable_events=True,
                     size=(5, 10),
@@ -418,7 +418,7 @@ def crear_lyt(evento):
                 sg.Text("     O", size=(5, 1), justification="l", font=("Arial", 15),),
                 sg.Slider(
                     range=(1, 20),
-                    key="cant_O",
+                    key="O",
                     orientation="h",
                     enable_events=True,
                     size=(5, 10),
@@ -428,7 +428,7 @@ def crear_lyt(evento):
                 sg.Text("     P", size=(5, 1), justification="l", font=("Arial", 15),),
                 sg.Slider(
                     range=(1, 20),
-                    key="cant_P",
+                    key="P",
                     orientation="h",
                     enable_events=True,
                     size=(5, 10),
@@ -438,7 +438,7 @@ def crear_lyt(evento):
                 sg.Text("     Q", size=(5, 1), justification="l", font=("Arial", 15),),
                 sg.Slider(
                     range=(1, 20),
-                    key="cant_Q",
+                    key="Q",
                     orientation="h",
                     enable_events=True,
                     size=(5, 10),
@@ -449,7 +449,7 @@ def crear_lyt(evento):
                 sg.Text("     R", size=(5, 1), justification="l", font=("Arial", 15),),
                 sg.Slider(
                     range=(1, 20),
-                    key="cant_R",
+                    key="R",
                     orientation="h",
                     enable_events=True,
                     size=(5, 10),
@@ -459,7 +459,7 @@ def crear_lyt(evento):
                 sg.Text("     S", size=(5, 1), justification="l", font=("Arial", 15),),
                 sg.Slider(
                     range=(1, 20),
-                    key="cant_S",
+                    key="S",
                     orientation="h",
                     enable_events=True,
                     size=(5, 10),
@@ -469,7 +469,7 @@ def crear_lyt(evento):
                 sg.Text("     T", size=(5, 1), justification="l", font=("Arial", 15),),
                 sg.Slider(
                     range=(1, 20),
-                    key="cant_T",
+                    key="T",
                     orientation="h",
                     enable_events=True,
                     size=(5, 10),
@@ -480,7 +480,7 @@ def crear_lyt(evento):
                 sg.Text("     U", size=(5, 1), justification="l", font=("Arial", 15),),
                 sg.Slider(
                     range=(1, 20),
-                    key="cant_U",
+                    key="U",
                     orientation="h",
                     enable_events=True,
                     size=(5, 10),
@@ -490,7 +490,7 @@ def crear_lyt(evento):
                 sg.Text("     V", size=(5, 1), justification="l", font=("Arial", 15),),
                 sg.Slider(
                     range=(1, 20),
-                    key="cant_V",
+                    key="V",
                     orientation="h",
                     enable_events=True,
                     size=(5, 10),
@@ -500,7 +500,7 @@ def crear_lyt(evento):
                 sg.Text("     W", size=(5, 1), justification="l", font=("Arial", 15),),
                 sg.Slider(
                     range=(1, 20),
-                    key="cant_W",
+                    key="W",
                     orientation="h",
                     enable_events=True,
                     size=(5, 10),
@@ -511,7 +511,7 @@ def crear_lyt(evento):
                 sg.Text("     X", size=(5, 1), justification="l", font=("Arial", 15),),
                 sg.Slider(
                     range=(1, 20),
-                    key="cant_X",
+                    key="X",
                     orientation="h",
                     enable_events=True,
                     size=(5, 10),
@@ -521,7 +521,7 @@ def crear_lyt(evento):
                 sg.Text("     Y", size=(5, 1), justification="l", font=("Arial", 15),),
                 sg.Slider(
                     range=(1, 20),
-                    key="cant_Y",
+                    key="Y",
                     orientation="h",
                     enable_events=True,
                     size=(5, 10),
@@ -531,7 +531,7 @@ def crear_lyt(evento):
                 sg.Text("     Z", size=(5, 1), justification="l", font=("Arial", 15),),
                 sg.Slider(
                     range=(1, 20),
-                    key="cant_Z",
+                    key="Z",
                     orientation="h",
                     enable_events=True,
                     size=(5, 10),
@@ -576,7 +576,7 @@ def crear_lyt(evento):
                 sg.Text("     A", size=(5, 1), justification="l", font=("Arial", 15),),
                 sg.Slider(
                     range=(1, 20),
-                    key="val_A",
+                    key="A",
                     orientation="h",
                     enable_events=True,
                     size=(5, 10),
@@ -586,7 +586,7 @@ def crear_lyt(evento):
                 sg.Text("     B", size=(5, 1), justification="l", font=("Arial", 15),),
                 sg.Slider(
                     range=(1, 20),
-                    key="val_B",
+                    key="B",
                     orientation="h",
                     enable_events=True,
                     size=(5, 10),
@@ -596,7 +596,7 @@ def crear_lyt(evento):
                 sg.Text("     C", size=(5, 1), justification="l", font=("Arial", 15),),
                 sg.Slider(
                     range=(1, 20),
-                    key="val_C",
+                    key="C",
                     orientation="h",
                     enable_events=True,
                     size=(5, 10),
@@ -607,7 +607,7 @@ def crear_lyt(evento):
                 sg.Text("     D", size=(5, 1), justification="l", font=("Arial", 15),),
                 sg.Slider(
                     range=(1, 20),
-                    key="val_D",
+                    key="D",
                     orientation="h",
                     enable_events=True,
                     size=(5, 10),
@@ -617,7 +617,7 @@ def crear_lyt(evento):
                 sg.Text("     E", size=(5, 1), justification="l", font=("Arial", 15),),
                 sg.Slider(
                     range=(1, 20),
-                    key="val_E",
+                    key="E",
                     orientation="h",
                     enable_events=True,
                     size=(5, 10),
@@ -627,7 +627,7 @@ def crear_lyt(evento):
                 sg.Text("     F", size=(5, 1), justification="l", font=("Arial", 15),),
                 sg.Slider(
                     range=(1, 20),
-                    key="val_F",
+                    key="F",
                     orientation="h",
                     enable_events=True,
                     size=(5, 10),
@@ -638,7 +638,7 @@ def crear_lyt(evento):
                 sg.Text("     G", size=(5, 1), justification="l", font=("Arial", 15),),
                 sg.Slider(
                     range=(1, 20),
-                    key="val_G",
+                    key="G",
                     orientation="h",
                     enable_events=True,
                     size=(5, 10),
@@ -648,7 +648,7 @@ def crear_lyt(evento):
                 sg.Text("     H", size=(5, 1), justification="l", font=("Arial", 15),),
                 sg.Slider(
                     range=(1, 20),
-                    key="val_H",
+                    key="H",
                     orientation="h",
                     enable_events=True,
                     size=(5, 10),
@@ -658,7 +658,7 @@ def crear_lyt(evento):
                 sg.Text("     I", size=(5, 1), justification="l", font=("Arial", 15),),
                 sg.Slider(
                     range=(1, 20),
-                    key="val_I",
+                    key="I",
                     orientation="h",
                     enable_events=True,
                     size=(5, 10),
@@ -669,7 +669,7 @@ def crear_lyt(evento):
                 sg.Text("     J", size=(5, 1), justification="l", font=("Arial", 15),),
                 sg.Slider(
                     range=(1, 20),
-                    key="val_J",
+                    key="J",
                     orientation="h",
                     enable_events=True,
                     size=(5, 10),
@@ -679,7 +679,7 @@ def crear_lyt(evento):
                 sg.Text("     K", size=(5, 1), justification="l", font=("Arial", 15),),
                 sg.Slider(
                     range=(1, 20),
-                    key="val_K",
+                    key="K",
                     orientation="h",
                     enable_events=True,
                     size=(5, 10),
@@ -689,7 +689,7 @@ def crear_lyt(evento):
                 sg.Text("     L", size=(5, 1), justification="l", font=("Arial", 15),),
                 sg.Slider(
                     range=(1, 20),
-                    key="val_L",
+                    key="L",
                     orientation="h",
                     enable_events=True,
                     size=(5, 10),
@@ -700,7 +700,7 @@ def crear_lyt(evento):
                 sg.Text("     M", size=(5, 1), justification="l", font=("Arial", 15),),
                 sg.Slider(
                     range=(1, 20),
-                    key="val_M",
+                    key="M",
                     orientation="h",
                     enable_events=True,
                     size=(5, 10),
@@ -710,7 +710,7 @@ def crear_lyt(evento):
                 sg.Text("     N", size=(5, 1), justification="l", font=("Arial", 15),),
                 sg.Slider(
                     range=(1, 20),
-                    key="val_N",
+                    key="N",
                     orientation="h",
                     enable_events=True,
                     size=(5, 10),
@@ -720,7 +720,7 @@ def crear_lyt(evento):
                 sg.Text("     Ñ", size=(5, 1), justification="l", font=("Arial", 15),),
                 sg.Slider(
                     range=(1, 20),
-                    key="val_Ñ",
+                    key="Ñ",
                     orientation="h",
                     enable_events=True,
                     size=(5, 10),
@@ -731,7 +731,7 @@ def crear_lyt(evento):
                 sg.Text("     O", size=(5, 1), justification="l", font=("Arial", 15),),
                 sg.Slider(
                     range=(1, 20),
-                    key="val_O",
+                    key="O",
                     orientation="h",
                     enable_events=True,
                     size=(5, 10),
@@ -741,7 +741,7 @@ def crear_lyt(evento):
                 sg.Text("     P", size=(5, 1), justification="l", font=("Arial", 15),),
                 sg.Slider(
                     range=(1, 20),
-                    key="val_P",
+                    key="P",
                     orientation="h",
                     enable_events=True,
                     size=(5, 10),
@@ -751,7 +751,7 @@ def crear_lyt(evento):
                 sg.Text("     Q", size=(5, 1), justification="l", font=("Arial", 15),),
                 sg.Slider(
                     range=(1, 20),
-                    key="val_Q",
+                    key="Q",
                     orientation="h",
                     enable_events=True,
                     size=(5, 10),
@@ -762,7 +762,7 @@ def crear_lyt(evento):
                 sg.Text("     R", size=(5, 1), justification="l", font=("Arial", 15),),
                 sg.Slider(
                     range=(1, 20),
-                    key="val_R",
+                    key="R",
                     orientation="h",
                     enable_events=True,
                     size=(5, 10),
@@ -772,7 +772,7 @@ def crear_lyt(evento):
                 sg.Text("     S", size=(5, 1), justification="l", font=("Arial", 15),),
                 sg.Slider(
                     range=(1, 20),
-                    key="val_S",
+                    key="S",
                     orientation="h",
                     enable_events=True,
                     size=(5, 10),
@@ -782,7 +782,7 @@ def crear_lyt(evento):
                 sg.Text("     T", size=(5, 1), justification="l", font=("Arial", 15),),
                 sg.Slider(
                     range=(1, 20),
-                    key="val_T",
+                    key="T",
                     orientation="h",
                     enable_events=True,
                     size=(5, 10),
@@ -793,7 +793,7 @@ def crear_lyt(evento):
                 sg.Text("     U", size=(5, 1), justification="l", font=("Arial", 15),),
                 sg.Slider(
                     range=(1, 20),
-                    key="val_U",
+                    key="U",
                     orientation="h",
                     enable_events=True,
                     size=(5, 10),
@@ -803,7 +803,7 @@ def crear_lyt(evento):
                 sg.Text("     V", size=(5, 1), justification="l", font=("Arial", 15),),
                 sg.Slider(
                     range=(1, 20),
-                    key="val_V",
+                    key="V",
                     orientation="h",
                     enable_events=True,
                     size=(5, 10),
@@ -813,7 +813,7 @@ def crear_lyt(evento):
                 sg.Text("     W", size=(5, 1), justification="l", font=("Arial", 15),),
                 sg.Slider(
                     range=(1, 20),
-                    key="val_W",
+                    key="W",
                     orientation="h",
                     enable_events=True,
                     size=(5, 10),
@@ -824,7 +824,7 @@ def crear_lyt(evento):
                 sg.Text("     X", size=(5, 1), justification="l", font=("Arial", 15),),
                 sg.Slider(
                     range=(1, 20),
-                    key="val_X",
+                    key="X",
                     orientation="h",
                     enable_events=True,
                     size=(5, 10),
@@ -834,7 +834,7 @@ def crear_lyt(evento):
                 sg.Text("     Y", size=(5, 1), justification="l", font=("Arial", 15),),
                 sg.Slider(
                     range=(1, 20),
-                    key="val_Y",
+                    key="Y",
                     orientation="h",
                     enable_events=True,
                     size=(5, 10),
@@ -844,7 +844,7 @@ def crear_lyt(evento):
                 sg.Text("     Z", size=(5, 1), justification="l", font=("Arial", 15),),
                 sg.Slider(
                     range=(1, 20),
-                    key="val_Z",
+                    key="Z",
                     orientation="h",
                     enable_events=True,
                     size=(5, 10),
@@ -1567,6 +1567,7 @@ def crear_partida(cfg):
     layout = []
     # bolsa = Bolsa()
     # letras = bolsa.sacar_letras(7)
+    dicc_puntos = {}
     if cfg["dificultad"] == "facil":
         for i in range(cfg["Filas"]):
             a = []
@@ -1576,26 +1577,29 @@ def crear_partida(cfg):
                         sg.Button(
                             " ",
                             size=(2, 2),
-                            key=((i, j), 2),
+                            key=(i, j),
                             pad=(1, 1),
                             button_color=("white", "green"),
                         )
                     )
+                    dicc_puntos[(i, j)] = 2
                 else:
                     if ((i % 2 == 0) & (j % 2 == 1)) or ((i % 2 == 1) & (j % 2 == 0)):
                         a.append(
                             sg.Button(
                                 " ",
                                 size=(2, 2),
-                                key=((i, j), 1.5),
+                                key=(i, j),
                                 pad=(1, 1),
                                 button_color=("white", "blue"),
                             )
                         )
+                        dicc_puntos[(i, j)] = 1.5
                     else:
                         a.append(
-                            sg.Button(" ", size=(2, 2), key=((i, j), 1), pad=(1, 1))
+                            sg.Button(" ", size=(2, 2), key=(i, j), pad=(1, 1))
                         )
+                        dicc_puntos[(i, j)] = 1
             layout.append(a)
     elif cfg["dificultad"] == "medio":
         for i in range(cfg["Filas"]):
@@ -1611,36 +1615,40 @@ def crear_partida(cfg):
                         sg.Button(
                             " ",
                             size=(2, 2),
-                            key=((i, j), 2),
+                            key=(i, j),
                             pad=(1, 1),
                             button_color=("white", "green"),
                         )
                     )
+                    dicc_puntos[(i, j)] = 2
                 else:
                     if (i % 2 == 0) & (j % 2 == 1):
                         a.append(
                             sg.Button(
                                 " ",
                                 size=(2, 2),
-                                key=((i, j), 1.5),
+                                key=(i, j),
                                 pad=(1, 1),
                                 button_color=("white", "blue"),
                             )
                         )
+                        dicc_puntos[(i, j)] = 1.5
                     elif (i % 2 == 1) & (j % 2 == 0):
                         a.append(
                             sg.Button(
                                 " ",
                                 size=(2, 2),
-                                key=((i, j), 0.8),
+                                key=(i, j),
                                 pad=(1, 1),
                                 button_color=("white", "red"),
                             )
                         )
+                        dicc_puntos[(i, j)] = 0.8
                     else:
                         a.append(
-                            sg.Button(" ", size=(2, 2), key=((i, j), 1), pad=(1, 1))
+                            sg.Button(" ", size=(2, 2), key=(i, j), pad=(1, 1))
                         )
+                        dicc_puntos[(i, j)] = 1
             layout.append(a)
     elif cfg["dificultad"] == "dificil":
         for i in range(cfg["Filas"]):
@@ -1656,52 +1664,56 @@ def crear_partida(cfg):
                         sg.Button(
                             " ",
                             size=(2, 2),
-                            key=((i, j), 0.5),
+                            key=(i, j),
                             pad=(1, 1),
                             button_color=("white", "purple"),
                         )
                     )
+                    dicc_puntos[(i, j)] = 0.5
                 else:
                     if (i % 2 == 0) & (j % 2 == 1):
                         a.append(
                             sg.Button(
                                 " ",
                                 size=(2, 2),
-                                key=((i, j), 1.5),
+                                key=(i, j),
                                 pad=(1, 1),
                                 button_color=("white", "blue"),
                             )
                         )
+                        dicc_puntos[(i, j)] = 1.5
                     elif (i % 2 == 1) & (j % 2 == 0):
                         a.append(
                             sg.Button(
                                 " ",
                                 size=(2, 2),
-                                key=((i, j), 0.8),
+                                key=(i, j),
                                 pad=(1, 1),
                                 button_color=("white", "red"),
                             )
                         )
+                        dicc_puntos[(i, j)] = 0.8
                     else:
                         a.append(
-                            sg.Button(" ", size=(2, 2), key=((i, j), 1), pad=(1, 1))
+                            sg.Button(" ", size=(2, 2), key=(i, j), pad=(1, 1))
                         )
+                        dicc_puntos[(i, j)] = 1
             layout.append(a)
-
+    cfg["tablero"].update(dicc_puntos)
     a = []
     for j in range(7):
         a.append(
             sg.Button(
                 # letras[j],
                 size=(3, 3),
-                key=("letra" + str(j),),
+                key="letra" + str(j),
                 button_color=("black", "lightblue"),
             )
         )
 
     b = []
     for j in range(7):
-        b.append(sg.Button("*", size=(3, 3), key=("letraM" + str(j),), button_color=("white", "blue"),))
+        b.append(sg.Button("*", size=(3, 3), key="letraM" + str(j), button_color=("white", "blue"),))
 
     layout.append(a)
     layout.insert(0, b)
@@ -1709,7 +1721,7 @@ def crear_partida(cfg):
         [
             sg.Button(
                 "Iniciar",
-                key=("iniciar",),
+                key=("iniciar"),
                 border_width=5,
                 button_color=("white", "green"),
                 size=(3, 3),
@@ -1717,7 +1729,7 @@ def crear_partida(cfg):
             ),
             sg.Button(
                 "Finalizar turno",
-                key=("fin-turno",),
+                key=("fin-turno"),
                 border_width=5,
                 button_color=("white", "red"),
                 size=(5, 3),
@@ -1725,7 +1737,7 @@ def crear_partida(cfg):
             ),
             sg.Button(
                 "Deshacer",
-                key=("vaciar",),
+                key=("vaciar"),
                 border_width=5,
                 button_color=("black", "pink"),
                 size=(5, 3),
@@ -1734,7 +1746,7 @@ def crear_partida(cfg):
             ),
             sg.Button(
                 "Cambiar letras",
-                key=("cambio",),
+                key=("cambio"),
                 border_width=5,
                 button_color=('black', 'lightblue'),
                 size=(5, 3),
@@ -1743,7 +1755,7 @@ def crear_partida(cfg):
             ),
             sg.Button(
                 "Finalizar Partida",
-                key=("fin-partida",),
+                key=("fin-partida"),
                 border_width=5,
                 button_color=('black', 'lightblue'),
                 size=(5, 3),
@@ -1752,7 +1764,7 @@ def crear_partida(cfg):
             ),
             sg.Button(
                 "Salir de pantalla completa",
-                key=("reducir",),
+                key=("reducir"),
                 border_width=5,
                 button_color=('black', 'lightblue'),
                 size=(5, 3),
