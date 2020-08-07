@@ -85,6 +85,7 @@ def jugar_partida(config, partida={}):
         element_justification="c",
         background_color="#143430",
     )
+    window.Maximize()
     bolsa = Bolsa(un_ABC=config["cant_letras"])
     letras_jugador = bolsa.sacar_letras(7)
     letras_maquina = bolsa.sacar_letras(7)
@@ -175,7 +176,7 @@ def jugar_partida(config, partida={}):
                 else:
                     guido.agregar_letras(bolsa.sacar_letras(7-len(guido.letras)))
                     juez.turno = nombre
-                    window["puntaje_player"].update(juez.jugadores["maquina"])
+                    window["puntaje_maquina"].update(juez.jugadores["maquina"])
                     sg.Popup("Es el turno de: "+str(nombre))
     if comenzo:
         podio = juez._determinar_ganador()

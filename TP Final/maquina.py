@@ -68,7 +68,7 @@ class Maquina():
     def agregar_letras(self, nuevas_letras):
         nuevas_letras = list(map(str.upper, nuevas_letras))
         self._letras.extend(nuevas_letras)
-        sg.Popup("Las letras de la maquina son: "+str(self._letras))
+        #sg.Popup("Las letras de la maquina son: "+str(self._letras))
 
     def armo_palabra(self):
         """Arma palabras combinando todas las letras.
