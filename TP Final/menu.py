@@ -1,79 +1,10 @@
 import PySimpleGUI as sg
 import crear_layout as crear
 import Scrabble
+from pathlib import Path
+import json
 
 # import Trabajo_Final.py as play
-
-window = sg.Window(
-    "Menú",
-    crear.crear_lyt("menu"),
-    resizable=True,
-    element_justification="c",
-    background_color="#143430",
-)
-
-
-def switch(ky):
-    aux = [
-        "A",
-        "B",
-        "C",
-        "D",
-        "E",
-        "F",
-        "G",
-        "H",
-        "I",
-        "J",
-        "K",
-        "L",
-        "M",
-        "N",
-        "Ñ",
-        "O",
-        "P",
-        "Q",
-        "R",
-        "S",
-        "T",
-        "U",
-        "V",
-        "W",
-        "X",
-        "Y",
-        "Z",
-    ]
-    if ky in aux:
-        return True
-    else:
-        return False
-
-
-def switch2(evento):
-    aux = [
-        "config",
-        "tiempo_de_partida",
-        "cantidad_letras",
-        "puntos_por_letra",
-        "letras",
-        "dificultad",
-        "tamaño_tablero",
-        "volver_menu",
-        "volver_ltrs",
-        "top_ten",
-        "volver_tops",
-        "top_ten_gen",
-        "top_ten_facil",
-        "top_ten_medio",
-        "top_ten_dificil",
-        "volver_cfg",
-    ]  #  "cargar"
-    if evento in aux:
-        return True
-    else:
-        return False
-
-
 config = {
     "tablero": {},
     "Filas": 7,
@@ -151,16 +82,84 @@ for i in range(config["Filas"]):
             else:
                 dicc_puntos[(i, j)] = 1
 config["tablero"].update(dicc_puntos)
+window = sg.Window(
+    "Menú",
+    crear.crear_lyt("menu"),
+    resizable=True,
+    element_justification="c",
+    background_color="#143430",
+)
+
+
+def switch(ky):
+    aux = [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E",
+        "F",
+        "G",
+        "H",
+        "I",
+        "J",
+        "K",
+        "L",
+        "M",
+        "N",
+        "Ñ",
+        "O",
+        "P",
+        "Q",
+        "R",
+        "S",
+        "T",
+        "U",
+        "V",
+        "W",
+        "X",
+        "Y",
+        "Z",
+    ]
+    if ky in aux:
+        return True
+    else:
+        return False
+
+
+def switch2(evento):
+    aux = [
+        "config",
+        "tiempo_de_partida",
+        "cantidad_letras",
+        "puntos_por_letra",
+        "letras",
+        "dificultad",
+        "tamaño_tablero",
+        "volver_menu",
+        "volver_ltrs",
+        "top_ten",
+        "volver_tops",
+        "top_ten_gen",
+        "top_ten_facil",
+        "top_ten_medio",
+        "top_ten_dificil",
+        "volver_cfg",
+    ]  #  "cargar"
+    if evento in aux:
+        return True
+    else:
+        return False
+
 
 while True:
     event, values = window.Read()
-    print(event, values)
-
     if (event == None) | (event == "salir"):
         break
     # Guardando configuración
     elif event == "volver_cfg_time":
         config["tiempo"] = int(values["cant_tiempo"])
+        sg.Popup("El tiempo de partida sera "+str(config["tiempo"])+" minutos ")
         window.close()
         window = sg.Window(
             "Menú",
@@ -172,9 +171,11 @@ while True:
         )
     elif (event == "facil") | (event == "medio") | (event == "dificil"):
         config["dificultad"] = str(event)
+        sg.Popup("Eligio el nivel: "+str(config["dificultad"]))
     elif event == "volver_cfg_fyc":
         config["Filas"] = int(values["cant_filas"])
         config["Columnas"] = int(values["cant_columnas"])
+        sg.Popup("Eligio "+str(config["Filas"])+" filas y "+str(config["Columnas"])+" columnas.")
         window.close()
         window = sg.Window(
             "Menú",
@@ -217,19 +218,19 @@ while True:
             )
     elif event == "nueva_partida":  # Iniciar una nueva partida
         window.close()
+        try:
+            with open('config.json', 'r') as file:
+                config = json.load(file)
+                coordenadas = list(map(tuple, config["tablero"].keys()))
+                valores = config["tablero"].values()
+                config["tablero"] = dict(zip(coordenadas, valores))
+        except FileNotFoundError:
+            pass
+        # print(config)
         layout = crear.crear_partida(config)
-        # window = sg.Window(
-        #     "SCRABBLE",
-        #     crear.crear_partida(config),
-        #     finalize=True,
-        #     resizable=True,
-        #     element_justification="c",
-        #     background_color="#143430",
-        # )
-        Scrabble
-    elif switch2(
-        event
-    ):  # llama al constructor de layouts si encuentra el evento en el switch2
+        Scrabble.jugar_partida(config)
+    elif switch2(event):
+        #  llama al constructor de layouts si encuentra el evento en el switch2
         window.close()
         window = sg.Window(
             "Menú",
@@ -240,6 +241,36 @@ while True:
             background_color="#143430",
         )
     elif event == "cargar":  # Iniciar una partida guardada
-        None
+        window.close()
+        try:
+            with open('partida.json', 'r') as file:
+                partida = json.load(file)
+                coordenadas = list(map(eval, list(partida["tablero"].keys())))
+                valores = partida["tablero"].values()
+                partida["tablero"] = dict(zip(coordenadas, valores))
+                coordenadas = list(map(eval, list(partida["multiplicadores"].keys())))
+                valores = partida["tablero"].values()
+                partida["multiplicadores"] = dict(zip(coordenadas, valores))
+                config["tablero"] = partida["multiplicadores"]
+                config["Filas"] = partida["filas"]
+                config["Columnas"] = partida["columnas"]
+                config["dificultad"] = partida["dificultad"]
+                config["tiempo"] = partida["tiempo"]
+                config["cant_letras"] = partida["letras_bolsa"]
+                config["valores_letras"] = partida["tabla_puntajes"]
+                layout = crear.crear_partida(config)
+                Scrabble.jugar_partida(config, partida)
+        except FileNotFoundError or KeyError:
+            sg.Popup("Ha ocurrido un error en la carga de la partida.")
     elif switch(event):
         window.Element("cant_Total").Update(str(int(sum(values.values()))))
+    # path_actual = Path.cwd()
+    # try:
+    print(config)
+    with open('config.json', 'w') as file:
+        coordenadas = list(map(str, config["tablero"].keys()))
+        valores = config["tablero"].values()
+        config["tablero"] = dict(zip(coordenadas, valores))
+        json.dump(config, file)
+    # except:
+    #     sg.Popup("No se pudo crear el archivo")

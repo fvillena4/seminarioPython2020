@@ -13,9 +13,8 @@ import time
 
 class Reloj():
 
-
-    layout = [[sg.Text('Reloj', text_color="red", justification='center')],
-              [sg.Text('', size=(8, 2), font=('Helvetica', 20), justification='center', key='text')]]
+    _layout = [[sg.Text('Reloj', text_color="red", justification='center')],
+              [sg.Text('', size=(8, 2), font=('Helvetica', 20), justification='center', key='hora')]]
 
     def time_as_int(self):
         return int(round(time.time()))
@@ -25,21 +24,21 @@ class Reloj():
         self.current_time = 0
         self.end_time = 60 * minutos  # 60 por la cantidad de minutos que se quiere
         self.start_time = self.time_as_int()
-        self.window = sg.Window('Running Timer', self.layout,
+        self.window = sg.Window('Running Timer', self._layout,
                                 no_titlebar=True,
                                 auto_size_buttons=False,
                                 keep_on_top=True,
                                 grab_anywhere=True,
                                 element_padding=(0, 0))
 
-    def correr(self):
+    def correr(self, window):
         while self.current_time < self.end_time:
             # --------- Read and update window --------
             event, values = self.window.read(timeout=1)
             self.current_time = self.time_as_int() - self.start_time
             # print(self.current_time)
             # --------- Display timer in window --------
-            self.window['text'].update('{:02d}:{:02d}:{:02d}'.format((self.current_time // 100) // 60, (self.current_time // 100) % 60, (self.current_time % 100)))
+            self.window['hora'].update('{:02d}:{:02d}:{:02d}'.format((self.current_time // 100) // 60, (self.current_time // 100) % 60, (self.current_time % 100)))
         self.window.close()
 
 

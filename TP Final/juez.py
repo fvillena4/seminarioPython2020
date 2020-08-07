@@ -44,12 +44,25 @@ class Juez():
         """Deleter del turno."""
         del self._turno
 
+    @property
+    def jugadores(self):
+        return self._jugadores
+
+    @property
+    def tabla_puntaje(self):
+        return self._tabla_puntaje
+
+    @property
+    def multiplicadores(self):
+        return self._multiplicadores
+
     def _es_palabra(self, palabra):
         """Verifica si es una palabra válida segun los diccionarios de pattern.
 
         Recibe palabra que es un string
         devuelve True si es, False caso contrario.
         """
+        palabra = palabra.lower()
         return palabra in ptn.lexicon and palabra in ptn.spelling  # devuelve si esta en lexicon y en spelling
 
     def _clasifico(self, palabra):
@@ -60,6 +73,7 @@ class Juez():
             :clasificacion: un diccionario que tiene las clasficaciones que busco
         Devuelve True si está dentro de la clasificación, False caso contrario.
         """
+        palabra = palabra.lower()
         palabra_parseada = (ptn.parse(palabra)).split()  # parseo la palabra y la divido
         for cada in palabra_parseada:  # recorro la palabra parseada
             for i in cada:
@@ -89,10 +103,9 @@ class Juez():
         puntaje = 0  # inicializo el puntaje de la palabra
         if len(letras_palabra) == len(posiciones):
             for i in range(len(letras_palabra)):  # recorro la lista de letras de palabra
-                # sg.Popup("El valor de la letra "+str(letras_palabra[i])+" es de "+str(self._tabla_puntaje[letras_palabra[i]]),
-                #          " y el multiplicador de la pos "+str(posiciones[i])+" es de "+str(self._multiplicadores[posiciones[i]]))
                 puntaje = puntaje + (self._tabla_puntaje[letras_palabra[i]] * self._multiplicadores[posiciones[i]])  # actualizo el puntaje
         self._jugadores[id] = self._jugadores[id] + puntaje  # actualizo el puntaje del jugador
+        sg.Popup("El puntaje de la palabra "+str("".join(letras_palabra))+" es de "+str(puntaje))
         sg.Popup("El puntaje de "+str(id)+" es de "+str(self._jugadores[id]))
         return puntaje  # devuelve el puntaje
 

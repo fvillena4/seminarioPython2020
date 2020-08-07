@@ -20,8 +20,8 @@ def crear_lyt(evento):
                     key="nueva_partida",
                     border_width=7,
                     button_color=("white", "lightblue"),
-                    size=(30, 3),
-                    pad=(25, 25),
+                    size=(20, 3),
+                    pad=(15, 15),
                     font=("Arial", 12),
                 )
             ],
@@ -31,8 +31,8 @@ def crear_lyt(evento):
                     key="cargar",
                     border_width=7,
                     button_color=("white", "lightblue"),
-                    size=(30, 3),
-                    pad=(25, 25),
+                    size=(20, 3),
+                    pad=(15, 15),
                     font=("Arial", 12),
                 )
             ],
@@ -42,8 +42,8 @@ def crear_lyt(evento):
                     key="top_ten",
                     border_width=7,
                     button_color=("white", "lightblue"),
-                    size=(30, 3),
-                    pad=(25, 25),
+                    size=(20, 3),
+                    pad=(15, 15),
                     font=("Arial", 12),
                 )
             ],
@@ -53,8 +53,8 @@ def crear_lyt(evento):
                     key="config",
                     border_width=7,
                     button_color=("white", "lightblue"),
-                    size=(30, 3),
-                    pad=(25, 25),
+                    size=(20, 3),
+                    pad=(15, 15),
                     font=("Arial", 12),
                 )
             ],
@@ -64,8 +64,8 @@ def crear_lyt(evento):
                     key="salir",
                     border_width=7,
                     button_color=("white", "lightblue"),
-                    size=(30, 3),
-                    pad=(25, 25),
+                    size=(20, 3),
+                    pad=(15, 15),
                     font=("Arial", 12),
                 )
             ],
@@ -919,13 +919,13 @@ def crear_lyt(evento):
             ],
             [
                 sg.Slider(
-                    range=(1, 25),
+                    range=(6, 20),
                     key="cant_filas",
                     orientation="h",
                     enable_events=True,
                     size=(50, 25),
                     pad=(0, 15),
-                    default_value=10,
+                    default_value=7,
                 ),
             ],
             [
@@ -939,13 +939,13 @@ def crear_lyt(evento):
             ],
             [
                 sg.Slider(
-                    range=(1, 25),
+                    range=(6, 20),
                     key="cant_columnas",
                     orientation="h",
                     enable_events=True,
                     size=(50, 25),
                     pad=(0, 15),
-                    default_value=10,
+                    default_value=7,
                 ),
             ],
             [
@@ -1699,7 +1699,7 @@ def crear_partida(cfg):
                         )
                         dicc_puntos[(i, j)] = 1
             layout.append(a)
-    cfg["tablero"].update(dicc_puntos)
+    cfg["tablero"] = (dicc_puntos)
     a = []
     for j in range(7):
         a.append(
@@ -1754,8 +1754,8 @@ def crear_partida(cfg):
                 font=("Helvetica", 12),
             ),
             sg.Button(
-                "Finalizar Partida",
-                key=("fin-partida"),
+                "Guardar Partida",
+                key=("guardar"),
                 border_width=5,
                 button_color=('black', 'lightblue'),
                 size=(5, 3),
@@ -1763,8 +1763,8 @@ def crear_partida(cfg):
                 font=("Helvetica", 12),
             ),
             sg.Button(
-                "Salir de pantalla completa",
-                key=("reducir"),
+                "Finalizar partida",
+                key=("fin-partida"),
                 border_width=5,
                 button_color=('black', 'lightblue'),
                 size=(5, 3),

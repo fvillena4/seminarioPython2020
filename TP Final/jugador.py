@@ -25,7 +25,7 @@ class Jugador():
 
     @property
     def letras(self):
-        return self._letras.values()
+        return self._letras
 
     @property
     def cant_cambios(self):
@@ -122,6 +122,7 @@ class Jugador():
                         window[("cambio")].Update("Cambiar letras")
                         fin = True  # termino
                         juez.turno = "maquina"
+                        sg.Popup("Es el turno de: la maquina, porque cambiaste las letras")
                         self._cant_cambios += 1
                     elif len(letras_nuevas) < len(letras_viejas):
                         return True
@@ -191,13 +192,12 @@ class Jugador():
             elif event == "fin-turno":  # si quiero terminar el turno
                 if len(palabra) >= 2:  # si la palabra tiene 2 o mas letras
                     if self._verificar_juez(palabra, juez):  # la verifico con el juez
-                        juez.turno = "maquina"  # le doy el turno a la maquina
-                        # for i in posiciones:
-                        #     self._letras[i] = " "
                         fin = True  # termine mi turno
                         puntos = juez._calcular_puntaje(palabra, posiciones, self.nombre)
                         palabra = []
                         posiciones = []
+                        juez.turno = "maquina"  # le doy el turno a la maquina
+                        sg.Popup("Es el turno de: la maquina.")
                     else:  # si no es una palabra valida
                         palabra, posiciones = self.resetear(posiciones, window)  # devuelvo las letras usadas
                 else:

@@ -8,8 +8,10 @@ class Bolsa():
     La longitud del abecedario y de las cantidades coinciden.
     """
 
-    _ABC = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'Ñ', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z']
-    # cant = [11, 3, 4, 4, 11, 2, 2, 2, 6, 2, 1, 4, 3, 5, 1, 8, 2, 1, 4, 7, 4, 2, 6, 1, 1, 1, 1]
+    _ABC = {'A': 11, 'B': 3, 'C': 4, 'D': 4, 'E': 11, 'F': 2, 'G': 2, 'H': 2,
+            'I': 6, 'J': 2, 'K': 1, 'L': 4, 'M': 3, 'N': 5, 'Ñ': 1, 'O': 8,
+            'P': 2, 'Q': 1, 'R': 4, 'S': 7, 'T': 4, 'U': 2, 'V': 6, 'W': 1,
+            'X': 1, 'Y': 1, 'Z': 1}
 
     def __init__(self, un_ABC):
         """Inicializa (constructor) la bolsa."""

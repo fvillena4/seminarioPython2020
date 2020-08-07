@@ -30,7 +30,7 @@ class Maquina():
     def __init__(self, unas_letras, un_nivel='facil', filas=8, columnas=8):
         """Inicializa (Constructor) la maquina."""
         self._nivel = un_nivel  # recibo un nivel (facil,medio,dificil) para saber como tiene que jugar la maquina
-        unas_letras = list(map(lambda x : x.lower(), unas_letras))
+        # unas_letras = list(map(lambda x : x.lower(), unas_letras))
         self._letras = unas_letras
         self._filas = filas
         self._columnas = columnas
@@ -66,7 +66,7 @@ class Maquina():
         del self._letras
 
     def agregar_letras(self, nuevas_letras):
-        # nuevas_letras = list(map(str.upper(), nuevas_letras)))
+        nuevas_letras = list(map(str.upper, nuevas_letras))
         self._letras.extend(nuevas_letras)
         sg.Popup("Las letras de la maquina son: "+str(self._letras))
 
@@ -219,9 +219,11 @@ class Maquina():
         self._validar_palabras(combinaciones, juez)
         if self.nivel == "facil":
             if not self._palabras_validas:
+                print("Las palabras validas son: "+str(self._palabras_validas))
                 return False, "no hay palabras validas"
         else:
             if not self._palabras_adj_verb:
+                print("Las palabras validas son: "+str(self._palabras_adj_verb))
                 return False, "no hay palabras validas"
         posiciones = self.buscar_espacio(window)
         self.elegir_posicion_fila(posiciones)
