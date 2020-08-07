@@ -1,8 +1,9 @@
+"""Este modulo realiza el juego principal, que se llama desde el menu."""
+
 import pattern.es as pt
 import PySimpleGUI as sg
 import random
 from bolsa_letras import Bolsa
-from tableros import Tablero
 from jugador import Jugador
 from juez import Juez
 import crear_layout as crear
@@ -11,8 +12,10 @@ from maquina import Maquina
 
 
 def jugar_partida(config, partida={}):
+    """Juega la partida tanto la nueva partica como una cargada."""
 
     def iniciar(nombre):
+        """Elige aleatoriamente para comenzar entre el jugador y la maquina."""
         x = random.randint(0, 1)
         if x == 0:
             sg.popup_ok("Comienza el jugador: " + nombre)
@@ -22,6 +25,7 @@ def jugar_partida(config, partida={}):
             return True, "maquina"
 
     def abrir_partida(partida, window):
+        """Usa los componentes de la partida guardada."""
         try:
             tablero = partida["tablero"]
             for i in tablero.keys():
@@ -65,9 +69,7 @@ def jugar_partida(config, partida={}):
                 partida["filas"] = config["Filas"]
                 partida["columnas"] = config["Columnas"]
                 partida["tiempo"] = config["tiempo"]
-                print(partida)
                 json.dump(partida, file)
-                # print(partida)
                 return True
         except FileNotFoundError or KeyError:
             sg.Popup("Ha ocurrido un error.")
@@ -95,11 +97,11 @@ def jugar_partida(config, partida={}):
     mis_letras = dict(zip(claves, letras_jugador))
     comenzo = False
     final = False
+    abri = False
     while not final:
         if partida:
             abri, guido, jugador, juez = abrir_partida(partida, window)
             comenzo = abri
-        print("La configuracion es "+str(config))
         event, values = window.Read()
         if event == None or event == "fin-partida":
             valor = sg.popup_yes_no("¿Desea guardar la partida?")
@@ -115,7 +117,20 @@ def jugar_partida(config, partida={}):
                     sg.Popup("El juego aun no ha comenzado.")
             final = True
             break
-        if event == "guardar":
+        elif event == "Referencias":
+            window2 = sg.Window(
+                "Referencias",
+                crear.crear_lyt(event),
+                finalize=True,
+                resizable=True,
+                element_justification="c",
+                background_color="#143430",
+            )
+            event, values = window2.Read()
+            while not (event == None or event == "cerrar_referencias"):
+                None
+            window2.close()
+        elif event == "guardar":
             if comenzo:
                 guardado = guardar_partida()
                 if guardado:
@@ -128,6 +143,7 @@ def jugar_partida(config, partida={}):
                 sg.Popup("El juego aun no ha comenzado.")
         elif event == "iniciar" and not comenzo:
             nombre = sg.popup_get_text("Ingrese su nombre: ")
+            window["nombre_player"].update(nombre + ": ")
             comenzo, primero = iniciar(nombre)
             guido = Maquina(unas_letras=letras_maquina, un_nivel=config["dificultad"], filas=config["Filas"], columnas=config["Columnas"])
             jugador = Jugador(nombre, mis_letras, config["dificultad"], config["Filas"], config["Columnas"])
@@ -135,16 +151,18 @@ def jugar_partida(config, partida={}):
         elif not comenzo:
             sg.popup_ok("Para comenzar oprima el boton iniciar")
         if comenzo and not final:
-            sg.Popup("Ahora es el turno de "+str(juez.turno))
-            nombre = jugador.nombre
+            if abri:
+                sg.Popup("Ahora es el turno de "+str(juez.turno))
+                nombre = jugador.nombre
             if(juez.turno == nombre):
-                print(juez.multiplicadores)
                 jugador.jugar(window, juez, bolsa)
                 agregue = jugador._agregar_letras(window, bolsa)
                 if not agregue:
                     sg.Popup("No se pudo agregar letras.")
                     sg.Popup("Termino la partida, porque no hay mas letras.")
                     final = True
+                else:
+                    window["puntaje_player"].update(juez.jugadores[nombre])
             elif(juez.turno == "maquina"):
                 jugue, motivo = guido._jugar(window, juez, config)
                 if not jugue:
@@ -157,6 +175,7 @@ def jugar_partida(config, partida={}):
                 else:
                     guido.agregar_letras(bolsa.sacar_letras(7-len(guido.letras)))
                     juez.turno = nombre
+                    window["puntaje_player"].update(juez.jugadores["maquina"])
                     sg.Popup("Es el turno de: "+str(nombre))
     if comenzo:
         podio = juez._determinar_ganador()

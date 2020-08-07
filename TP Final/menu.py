@@ -140,10 +140,6 @@ def switch2(evento):
         "volver_ltrs",
         "top_ten",
         "volver_tops",
-        "top_ten_gen",
-        "top_ten_facil",
-        "top_ten_medio",
-        "top_ten_dificil",
         "volver_cfg",
     ]  #  "cargar"
     if evento in aux:
