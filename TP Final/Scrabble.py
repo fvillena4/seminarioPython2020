@@ -178,10 +178,22 @@ def jugar_partida(config, partida={}):
                     juez.turno = nombre
                     window["puntaje_maquina"].update(juez.jugadores["maquina"])
                     sg.Popup("Es el turno de: "+str(nombre))
-    if comenzo:
+    if comenzo and final:
         podio = juez._determinar_ganador()
         if 0 in podio.keys():
             sg.Popup("Hubo un empate con: "+str(podio[0][0][1])+" puntos.")
         else:
             sg.Popup("El ganador es: "+str(podio[1][0])+" con "+str(podio[1][1])+" puntos.")
+            with open('mejores.json', 'r') as file:
+                top = json.load(file)
+            with open('mejores.json', 'w') as file:
+                top = dict(top)
+                nuevo_top = dict()
+                top["nuevo"] = [jugador.nombre, juez.jugadores[nombre], juez.nivel]
+                mejores = list(sorted(top.values(), key=lambda x: x[1], reverse=True))
+                for i in range(len(mejores)):
+                    nuevo_top[i+1] = mejores[i]
+                    if i == 9:
+                        break
+                json.dump(nuevo_top, file)
     window.Close()

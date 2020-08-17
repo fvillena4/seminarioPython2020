@@ -987,141 +987,33 @@ def crear_lyt(evento):
                     justification="center",
                     font=("Arial", 15),
                 ),
-            ],
-            [
-                sg.Text("1°", size=(3, 1), justification="center", font=("Arial", 15),),
+            ]]
+        for i in range(10):
+            a = [
+                sg.Text(str(i+1)+"º", size=(3, 1), justification="center", font=("Arial", 15),),
                 sg.Text(
-                    "???", size=(15, 1), justification="center", font=("Arial", 15),
+                    "???", size=(15, 1), justification="center", key="nombre"+str(i+1), font=("Arial", 15),
                 ),
                 sg.Text(
-                    "???", size=(15, 1), justification="center", font=("Arial", 15),
+                    "???", size=(15, 1), justification="center",key="puntaje"+str(i+1), font=("Arial", 15),
                 ),
                 sg.Text(
-                    "???", size=(15, 1), justification="center", font=("Arial", 15),
+                    "???", size=(15, 1), justification="center",key="dificultad"+str(i+1), font=("Arial", 15),
                 ),
-            ],
-            [
-                sg.Text("2°", size=(3, 1), justification="center", font=("Arial", 15),),
-                sg.Text(
-                    "???", size=(15, 1), justification="center", font=("Arial", 15),
-                ),
-                sg.Text(
-                    "???", size=(15, 1), justification="center", font=("Arial", 15),
-                ),
-                sg.Text(
-                    "???", size=(15, 1), justification="center", font=("Arial", 15),
-                ),
-            ],
-            [
-                sg.Text("3°", size=(3, 1), justification="center", font=("Arial", 15),),
-                sg.Text(
-                    "???", size=(15, 1), justification="center", font=("Arial", 15),
-                ),
-                sg.Text(
-                    "???", size=(15, 1), justification="center", font=("Arial", 15),
-                ),
-                sg.Text(
-                    "???", size=(15, 1), justification="center", font=("Arial", 15),
-                ),
-            ],
-            [
-                sg.Text("4°", size=(3, 1), justification="center", font=("Arial", 15),),
-                sg.Text(
-                    "???", size=(15, 1), justification="center", font=("Arial", 15),
-                ),
-                sg.Text(
-                    "???", size=(15, 1), justification="center", font=("Arial", 15),
-                ),
-                sg.Text(
-                    "???", size=(15, 1), justification="center", font=("Arial", 15),
-                ),
-            ],
-            [
-                sg.Text("5°", size=(3, 1), justification="center", font=("Arial", 15),),
-                sg.Text(
-                    "???", size=(15, 1), justification="center", font=("Arial", 15),
-                ),
-                sg.Text(
-                    "???", size=(15, 1), justification="center", font=("Arial", 15),
-                ),
-                sg.Text(
-                    "???", size=(15, 1), justification="center", font=("Arial", 15),
-                ),
-            ],
-            [
-                sg.Text("6°", size=(3, 1), justification="center", font=("Arial", 15),),
-                sg.Text(
-                    "???", size=(15, 1), justification="center", font=("Arial", 15),
-                ),
-                sg.Text(
-                    "???", size=(15, 1), justification="center", font=("Arial", 15),
-                ),
-                sg.Text(
-                    "???", size=(15, 1), justification="center", font=("Arial", 15),
-                ),
-            ],
-            [
-                sg.Text("7°", size=(3, 1), justification="center", font=("Arial", 15),),
-                sg.Text(
-                    "???", size=(15, 1), justification="center", font=("Arial", 15),
-                ),
-                sg.Text(
-                    "???", size=(15, 1), justification="center", font=("Arial", 15),
-                ),
-                sg.Text(
-                    "???", size=(15, 1), justification="center", font=("Arial", 15),
-                ),
-            ],
-            [
-                sg.Text("8°", size=(3, 1), justification="center", font=("Arial", 15),),
-                sg.Text(
-                    "???", size=(15, 1), justification="center", font=("Arial", 15),
-                ),
-                sg.Text(
-                    "???", size=(15, 1), justification="center", font=("Arial", 15),
-                ),
-                sg.Text(
-                    "???", size=(15, 1), justification="center", font=("Arial", 15),
-                ),
-            ],
-            [
-                sg.Text("9°", size=(3, 1), justification="center", font=("Arial", 15),),
-                sg.Text(
-                    "???", size=(15, 1), justification="center", font=("Arial", 15),
-                ),
-                sg.Text(
-                    "???", size=(15, 1), justification="center", font=("Arial", 15),
-                ),
-                sg.Text(
-                    "???", size=(15, 1), justification="center", font=("Arial", 15),
-                ),
-            ],
-            [
-                sg.Text(
-                    "10°", size=(3, 1), justification="center", font=("Arial", 15),
-                ),
-                sg.Text(
-                    "???", size=(15, 1), justification="center", font=("Arial", 15),
-                ),
-                sg.Text(
-                    "???", size=(15, 1), justification="center", font=("Arial", 15),
-                ),
-                sg.Text(
-                    "???", size=(15, 1), justification="center", font=("Arial", 15),
-                ),
-            ],
-            [
-                sg.Button(
-                    "Volver",
-                    key="volver_menu",
-                    border_width=7,
-                    button_color=("white", "lightblue"),
-                    size=(30, 3),
-                    pad=(30, 30),
-                    font=("Arial", 12),
-                )
-            ],
-        ]
+                ]
+            layout.append(a)
+        vol = [
+              sg.Button(
+                  "Volver",
+                  key="volver_menu",
+                  border_width=7,
+                  button_color=("white", "lightblue"),
+                  size=(30, 3),
+                  pad=(30, 30),
+                  font=("Arial", 12),
+              )
+              ]
+        layout.append(vol)
     elif evento == "Referencias":
         layout = [
             [
@@ -1331,11 +1223,12 @@ def crear_partida(cfg):
                 font=("Helvetica", 12),
             ),
             sg.Button(
-                "Finalizar turno",
+                "Terminar turno",
                 key=("fin-turno"),
                 border_width=5,
                 button_color=("white", "red"),
-                size=(7, 3),
+                size=(10, 3),
+                pad=((1, 15), 15, 1),
                 font=("Helvetica", 12),
             ),
             sg.Button(
@@ -1352,7 +1245,7 @@ def crear_partida(cfg):
                 key=("cambio"),
                 border_width=5,
                 button_color=("black", "lightblue"),
-                size=(7, 3),
+                size=(15, 3),
                 pad=((1, 15), 15, 1),
                 font=("Helvetica", 12),
             ),

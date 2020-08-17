@@ -30,6 +30,10 @@ class Juez():
         self._turno = un_turno
 
     @property
+    def nivel(self):
+        return self._nivel
+
+    @property
     def turno(self):
         """Getter del turno."""
         return self._turno

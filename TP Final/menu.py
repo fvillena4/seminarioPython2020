@@ -236,6 +236,19 @@ while True:
             element_justification="c",
             background_color="#143430",
         )
+        if event == "top_ten":
+            try:
+                with open('mejores.json', 'r') as file:
+                    top = json.load(file)
+                    top = dict(top)
+                    for i in top.keys():
+                        clave = str(i)
+                        valor = top[i]
+                        window[str("nombre"+clave)].Update(valor[0])
+                        window[str("puntaje"+clave)].Update(valor[1])
+                        window[str("dificultad"+clave)].Update(valor[2])
+            except FileNotFoundError or KeyError:
+                sg.Popup("Ha ocurrido un error en la carga del top 10.")
     elif event == "cargar":  # Iniciar una partida guardada
         window.close()
         try:
@@ -260,8 +273,6 @@ while True:
             sg.Popup("Ha ocurrido un error en la carga de la partida.")
     elif switch(event):
         window.Element("cant_Total").Update(str(int(sum(values.values()))))
-    # path_actual = Path.cwd()
-    # try:
     print(config)
     with open('config.json', 'w') as file:
         coordenadas = list(map(str, config["tablero"].keys()))
